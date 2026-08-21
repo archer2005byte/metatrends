@@ -1,6 +1,10 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "./styles/presentation-base.css";
+@import "./styles/presentation-contrast.css";
+@import "./styles/presentation-interaction.css";
+@import "./styles/presentation-zone-map.css";
 
 @custom-variant dark (&:is(.dark *));
 
