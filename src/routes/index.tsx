@@ -60,6 +60,7 @@ function MetaTrendsPresentation() {
     if (destination !== 4) setEmbodimentStage(0);
     if (destination !== 6) setLongevityStage(0);
     if (destination !== 7) setWorkStage(0);
+    if (destination !== slideIds.length - 1) setEndRevealed(false);
     window.setTimeout(() => window.scrollTo({ top: destination * window.innerHeight, behavior: "smooth" }), 50);
   };
 
