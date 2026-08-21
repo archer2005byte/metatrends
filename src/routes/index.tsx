@@ -22,7 +22,7 @@ const forceData = {
 type ForceKey = keyof typeof forceData;
 type Horizon = 3 | 10 | 30;
 
-function MetaTrendsPresentation() {
+export function MetaTrendsPresentation() {
   const assetBase = import.meta.env.BASE_URL;
   const [slideNumber, setSlideNumber] = useState("1");
   const [selectedForce, setSelectedForce] = useState<ForceKey>("intelligence");

@@ -1,14 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { readingGroups, READING_PACK_URL, SHORT_URL } from "@/lib/reading-list";
-import { sendReadingList } from "@/lib/resources.functions";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-function ResourcesPage() {
+export function ResourcesPage() {
   const presentationUrl = import.meta.env.BASE_URL;
-  const send = useServerFn(sendReadingList);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -19,7 +16,8 @@ function ResourcesPage() {
     setStatus("sending");
     setMessage("");
     try {
-      const result = await send({ data: { email } });
+      const { sendReadingList } = await import("@/lib/resources.functions");
+      const result = await sendReadingList({ data: { email } });
       if (result.ok) {
         setStatus("sent");
         setMessage("Check your inbox — the reading list is on its way.");
