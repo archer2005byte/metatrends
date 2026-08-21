@@ -38,7 +38,8 @@ function MetaTrendsPresentation() {
   const [qrSrc, setQrSrc] = useState("");
 
   useEffect(() => {
-    const url = `${window.location.origin}/resources`;
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+    const url = `${window.location.origin}${basePath}/resources`;
     setResourcesUrl(url);
     let cancelled = false;
     import("qrcode").then(({ default: QRCode }) =>
