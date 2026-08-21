@@ -34,6 +34,19 @@ function MetaTrendsPresentation() {
   const [longevityStage, setLongevityStage] = useState<0 | 1 | 2>(0);
   const [workStage, setWorkStage] = useState<0 | 1 | 2>(0);
   const [endRevealed, setEndRevealed] = useState(false);
+  const [resourcesUrl, setResourcesUrl] = useState("");
+  const [qrSrc, setQrSrc] = useState("");
+
+  useEffect(() => {
+    const url = `${window.location.origin}/resources`;
+    setResourcesUrl(url);
+    let cancelled = false;
+    import("qrcode").then(({ default: QRCode }) =>
+      QRCode.toDataURL(url, { margin: 1, width: 512, color: { dark: "#000000", light: "#ffffff" } })
+    ).then((dataUrl) => { if (!cancelled) setQrSrc(dataUrl); }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
 
   useEffect(() => {
     const onScroll = () => setSlideNumber(String(Math.min(slideIds.length, Math.max(1, Math.round(window.scrollY / window.innerHeight) + 1))));
@@ -185,7 +198,7 @@ function MetaTrendsPresentation() {
 
       <section className="panel panel-dark human-panel" id="human"><div className="human-visual"><div className="human-orbit" /><div className="human-dot">?</div><div className="human-label label-one">MEANS</div><div className="human-label label-two">ENDS</div><div className="human-label label-three">MEANING</div></div><div className="human-copy"><p className="section-no">07 / THE HUMAN RESIDUE</p><h2>When machines<br />can produce answers,</h2><p className="human-statement">humans remain responsible for deciding which questions are worth asking.</p></div></section>
 
-      <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">08 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><div className="consulting-grid"><span>STRATEGY</span><span>OPERATING MODEL</span><span>GOVERNANCE</span><span>IMPLEMENTATION</span><span>TRUST</span></div><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section><section className={`panel end-panel ${endRevealed ? "end-open" : ""}`} id="end"><div className="end-reveal" data-no-advance><img src="/resources-qr.svg" alt="QR code linking to the Meta Trends resources page" /><p className="end-reveal-label">Go deeper</p><a href="/resources">meta.rogerarcher.com/resources</a></div></section>
+      <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">08 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><div className="consulting-grid"><span>STRATEGY</span><span>OPERATING MODEL</span><span>GOVERNANCE</span><span>IMPLEMENTATION</span><span>TRUST</span></div><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section><section className={`panel end-panel ${endRevealed ? "end-open" : ""}`} id="end"><div className="end-reveal" data-no-advance>{qrSrc ? <img src={qrSrc} alt="QR code linking to the Meta Trends resources page" /> : <div className="end-qr-placeholder" />}<p className="end-reveal-label">Go deeper</p><a href="/resources">{resourcesUrl ? resourcesUrl.replace(/^https?:\/\//, "") : "/resources"}</a></div></section>
     </main>
   );
 }
