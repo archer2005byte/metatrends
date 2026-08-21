@@ -1,27 +1,25 @@
-# Email not arriving at the EY address — diagnosis and next steps
+# Change the visible sender address to Raja@rogerarcher.com
 
-## What the checks show
+## What changes
 
-- The send was accepted and dispatched at 23:05 UTC to raja.bhattacharjee@in.ey.com from notify.rogerarcher.com.
-- No bounce, no rejection, no rate limiting recorded for it.
-- The address is not suppressed, in any scope.
-- The sender domain is fully verified with correct authentication records.
+Emails currently show as "Meta Trends <noreply@notify.rogerarcher.com>". They will show as "Raja Bhattacharjee <Raja@rogerarcher.com>" instead. A friendly named sender at the main domain also tends to fare better with corporate mail filters than a noreply address.
 
-So the site, the form, the endpoint and the sending domain are all working. The message left Lovable and was accepted onward. It is being held or dropped inside EY's mail gateway, which does not report back — a brand-new sending domain with no reputation history is the usual reason corporate filters quarantine silently.
+Replies go to that address, so anyone replying to the reading-list email reaches you directly.
 
-## Recommended next steps
+## How it works
 
-1. Confirm delivery to a non-corporate address (Gmail/Outlook.com). If it arrives there, the pipeline is proven and the issue is purely EY-side filtering.
-2. Ask EY IT to release the message from quarantine and allowlist notify.rogerarcher.com. Give them the timestamp 2026-08-21 23:05 UTC and the sender address.
-3. Warm the domain gradually — a handful of sends per day for the first week — rather than sending to a large audience immediately.
+- The underlying sending and authentication stay on the verified sender subdomain — nothing about DNS or verification changes.
+- Only the address shown in the inbox changes.
 
-## Optional improvements I can make
+## Technical detail
 
-- Add a bounce/complaint receiver so future non-delivery signals are captured automatically instead of being invisible.
-- Change the visible sender address from noreply@ to reading@rogerarcher.com, which corporate filters treat more favourably than noreply.
-- Adjust the resources page confirmation copy to mention that corporate mail filters can delay the message.
+- In the email send helper, set the visible From local part to `Raja` and the visible From domain to the root domain, keeping the verified sender domain unchanged for authentication.
+- If the platform is not yet allowing root-domain display for this project, the From falls back to the verified subdomain (`Raja@notify.rogerarcher.com`) and I will report that rather than leave sending broken.
+
+## Verification
+
+Send one test to the EY address and one to a non-corporate address, then confirm the delivery events and the From line as it appears in the inbox.
 
 ## Out of scope
 
-- Any change to the presentation, reading list content, or GitHub hosting.
-- Switching to a third-party email provider.
+- Any change to the email content, the resources page, or hosting.
