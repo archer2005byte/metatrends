@@ -11,8 +11,8 @@ export interface ReadingGroup {
   links: ReadingLink[];
 }
 
-export const SHORT_URL = "meta.rogerarcher.com/resources";
-export const RESOURCES_URL = "https://meta.rogerarcher.com/resources";
+export const SHORT_URL = "archer2005byte.github.io/metatrends/resources";
+export const RESOURCES_URL = "https://archer2005byte.github.io/metatrends/resources";
 export const READING_PACK_URL = "/meta-trends-reading-pack.pdf";
 
 export const readingGroups: ReadingGroup[] = [
