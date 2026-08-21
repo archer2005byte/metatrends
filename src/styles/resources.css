@@ -289,3 +289,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+.end-qr-placeholder {
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
