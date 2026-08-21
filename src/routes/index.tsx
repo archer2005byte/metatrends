@@ -114,6 +114,12 @@ function MetaTrendsPresentation() {
       goTo(1);
       return;
     }
+    if (current === slideIds.length - 1) {
+      if (!endRevealed) { setEndRevealed(true); return; }
+      const back = event.clientX < window.innerWidth * 0.28;
+      if (back) goTo(-1);
+      return;
+    }
     const forward = event.clientX >= window.innerWidth * 0.28;
     goTo(forward ? 1 : -1);
   };
