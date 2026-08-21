@@ -12,7 +12,10 @@ const SITE_NAME = "Meta Trends"
 const SENDER_DOMAIN = "notify.rogerarcher.com"
 // FROM_DOMAIN is the domain shown in the From: header (e.g., "example.com").
 // Can be the root domain when display_from_root is enabled — this is cosmetic only.
-const FROM_DOMAIN = "notify.rogerarcher.com"
+const FROM_DOMAIN = "rogerarcher.com"
+// Visible sender identity
+const FROM_NAME = "Raja Bhattacharjee"
+const FROM_LOCAL_PART = "Raja"
 
 export type SendTemplateEmailResult =
   | { sent: true }
@@ -69,7 +72,7 @@ export async function sendTemplateEmail(
     await sendLovableEmail(
       {
         to: recipient,
-        from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+        from: `${FROM_NAME} <${FROM_LOCAL_PART}@${FROM_DOMAIN}>`,
         sender_domain: SENDER_DOMAIN,
         subject,
         html,
