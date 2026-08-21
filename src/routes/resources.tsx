@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { readingGroups, READING_PACK_URL, SHORT_URL } from "@/lib/reading-list";
+import { apiUrl } from "@/lib/api-base";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
