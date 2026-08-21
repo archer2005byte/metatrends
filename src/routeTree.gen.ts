@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as ApiPublicReadingListRouteImport } from './routes/api/public/reading-list'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const ResourcesRoute = ResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicReadingListRoute = ApiPublicReadingListRouteImport.update({
+  id: '/api/public/reading-list',
+  path: '/api/public/reading-list',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -33,30 +39,47 @@ const LovableEmailTransactionalPreviewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/resources': typeof ResourcesRoute
+  '/api/public/reading-list': typeof ApiPublicReadingListRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/resources': typeof ResourcesRoute
+  '/api/public/reading-list': typeof ApiPublicReadingListRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/resources': typeof ResourcesRoute
+  '/api/public/reading-list': typeof ApiPublicReadingListRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/resources' | '/lovable/email/transactional/preview'
+  fullPaths:
+    | '/'
+    | '/resources'
+    | '/api/public/reading-list'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/resources' | '/lovable/email/transactional/preview'
-  id: '__root__' | '/' | '/resources' | '/lovable/email/transactional/preview'
+  to:
+    | '/'
+    | '/resources'
+    | '/api/public/reading-list'
+    | '/lovable/email/transactional/preview'
+  id:
+    | '__root__'
+    | '/'
+    | '/resources'
+    | '/api/public/reading-list'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ResourcesRoute: typeof ResourcesRoute
+  ApiPublicReadingListRoute: typeof ApiPublicReadingListRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -76,6 +99,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/reading-list': {
+      id: '/api/public/reading-list'
+      path: '/api/public/reading-list'
+      fullPath: '/api/public/reading-list'
+      preLoaderRoute: typeof ApiPublicReadingListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -89,6 +119,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ResourcesRoute: ResourcesRoute,
+  ApiPublicReadingListRoute: ApiPublicReadingListRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
