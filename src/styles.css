@@ -5,6 +5,7 @@
 @import "./styles/presentation-contrast.css";
 @import "./styles/presentation-interaction.css";
 @import "./styles/presentation-zone-map.css";
+@import "./styles/resources.css";
 
 @custom-variant dark (&:is(.dark *));
 
