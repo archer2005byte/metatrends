@@ -1,25 +1,27 @@
-# Verify the QR-to-email path end to end
+# Email not arriving at the EY address — diagnosis and next steps
 
-## What I checked (read-only)
+## What the checks show
 
-- The QR code on the final slide is generated at runtime from the current site address plus `/resources`, so scanning it on the GitHub-hosted site opens the GitHub resources page.
-- The email endpoint on your published Lovable app is live and responding: a request with a bad address is correctly refused with "invalid email", which proves the route is deployed and reachable from outside.
-- The resources page posts to that published endpoint whenever it is not running on Lovable or localhost, which is the GitHub case.
+- The send was accepted and dispatched at 23:05 UTC to raja.bhattacharjee@in.ey.com from notify.rogerarcher.com.
+- No bounce, no rejection, no rate limiting recorded for it.
+- The address is not suppressed, in any scope.
+- The sender domain is fully verified with correct authentication records.
 
-So the wiring is correct. What I have not proven is a real delivery from the GitHub page, because that requires actually sending an email.
+So the site, the form, the endpoint and the sending domain are all working. The message left Lovable and was accepted onward. It is being held or dropped inside EY's mail gateway, which does not report back — a brand-new sending domain with no reputation history is the usual reason corporate filters quarantine silently.
 
-## Proposed verification
+## Recommended next steps
 
-1. Load the live GitHub site in a headless browser, open the resources page the QR points to, type your address, and submit.
-2. Capture the on-screen confirmation and the network response from the Lovable endpoint.
-3. Check Lovable's email delivery log for a matching "sent" event.
-4. Report the outcome; if it fails, fix the specific cause (endpoint access, sender domain, or suppression).
+1. Confirm delivery to a non-corporate address (Gmail/Outlook.com). If it arrives there, the pipeline is proven and the issue is purely EY-side filtering.
+2. Ask EY IT to release the message from quarantine and allowlist notify.rogerarcher.com. Give them the timestamp 2026-08-21 23:05 UTC and the sender address.
+3. Warm the domain gradually — a handful of sends per day for the first week — rather than sending to a large audience immediately.
 
-## Note
+## Optional improvements I can make
 
-This test sends one real email to the address used. Tell me which address to use (roger@rogerarcher.com by default).
+- Add a bounce/complaint receiver so future non-delivery signals are captured automatically instead of being invisible.
+- Change the visible sender address from noreply@ to reading@rogerarcher.com, which corporate filters treat more favourably than noreply.
+- Adjust the resources page confirmation copy to mention that corporate mail filters can delay the message.
 
 ## Out of scope
 
-- Changes to the presentation or reading list content.
-- Any change to hosting or the deployment workflow.
+- Any change to the presentation, reading list content, or GitHub hosting.
+- Switching to a third-party email provider.
