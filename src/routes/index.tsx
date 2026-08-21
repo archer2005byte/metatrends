@@ -33,6 +33,7 @@ function MetaTrendsPresentation() {
   const [embodimentStage, setEmbodimentStage] = useState<0 | 1 | 2>(0);
   const [longevityStage, setLongevityStage] = useState<0 | 1 | 2>(0);
   const [workStage, setWorkStage] = useState<0 | 1 | 2>(0);
+  const [endRevealed, setEndRevealed] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setSlideNumber(String(Math.min(slideIds.length, Math.max(1, Math.round(window.scrollY / window.innerHeight) + 1))));
