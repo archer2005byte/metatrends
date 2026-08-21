@@ -1,56 +1,82 @@
-# Meta Trends — GitHub deployment plan
+# Meta Trends — GitHub + Resources + Email Plan
+
+## Goal
+Finish the Meta Trends microsite in this Lovable project, add the missing audience layer, and deploy it to a new GitHub repository with GitHub Pages static hosting. Use Lovable's built-in managed email for the optional reading-list send.
+
+## Decisions already confirmed
+- Email provider: **Lovable built-in email** (domain `rogerarcher.com`, sender `reading@rogerarcher.com`).
+- Source control: **Create a new GitHub repository via Lovable's GitHub integration**.
+- Target domain: `meta.rogerarcher.com` (configured after first publish).
 
 ## Current state
+- The presentation source from the handoff package is already ported into `src/routes/index.tsx` and the four presentation stylesheets are wired into `src/styles.css`.
+- The dev server renders the slide deck correctly.
+- Missing pieces: final-slide QR code, `/resources` route, email capture + send, reading-pack PDF, GitHub repo + Pages workflow.
 
-The ChatGPT-built presentation source has been imported into this Lovable TanStack Start project. The 12-slide interactive deck now renders at `/`, preserving the original visual language, keyboard/click navigation, and reveal states.
+## Implementation steps
 
-## What we still need to build
+### 1. Enable Lovable Cloud + email domain
+- Enable Lovable Cloud on the project.
+- Set up the sender domain for `rogerarcher.com` so emails can be sent from `reading@rogerarcher.com`.
+- Scaffold transactional email templates (`src/lib/email-templates/`).
 
-The handoff architecture asks for an audience companion layer on top of the presentation:
+### 2. Add the reading-pack PDF
+- Generate a reading-pack PDF from the link groups defined in the architecture brief.
+- Store it as a Lovable Asset or in `public/` so it is downloadable from `/resources` without email submission.
 
-1. **Final-screen QR code** on the last (black) slide, pointing to `/resources`.
-2. **Public `/resources` route** with:
-   - "Go deeper" heading and short explanation
-   - Grouped reading list (Intelligence, Science and health, Energy and civilisation, Work and society)
-   - Optional email capture
-   - "Email me the reading list" button
-   - "Download the reading pack" button
-   - Copyable short URL
-   - Mobile-friendly layout
-3. **Secure email endpoint** via Lovable Cloud (Supabase) + Resend:
-   - Server-side validation
-   - Single transactional email only after explicit submit
-   - Confirmation and error states
-   - No newsletter subscription, no data sharing
-4. **Reading-pack PDF** downloadable from `/resources` and linked in the email.
-5. **GitHub repository + Pages deployment**:
-   - Sync this project to a GitHub repo under your account
-   - Add a GitHub Actions workflow that builds the static client output and deploys to `gh-pages`
-   - Configure the custom domain `meta.rogerarcher.com` in repo settings
-6. **Acceptance testing**:
-   - Keyboard navigation, slide-number jump, click-reveal states
-   - Mobile layout
-   - QR scan reaching `/resources`
-   - Email delivery test
-   - PDF download without email
+### 3. Build `/resources`
+- Create `src/routes/resources.tsx` with its own `head()` metadata.
+- Page contents:
+  - Heading: "Go deeper"
+  - Subhead: "The sources behind the conversation."
+  - Optional email field + "Email me the reading list" button.
+  - "Download the reading pack" button.
+  - Copyable short URL: `https://meta.rogerarcher.com/resources`
+  - Link groups: Intelligence, Science and health, Energy and civilisation, Work and society.
+- Client-side email validation, privacy note, confirmation/error states.
+- Submission calls a server function; the page remains usable if email fails.
 
-## Hosting recommendation
+### 4. Add the final-slide QR code
+- On the last slide (black terminal screen), reveal a QR code that links to `/resources` on the final click/transition.
+- Keep the existing black-screen visual ending.
 
-GitHub Pages is the right static host for the presentation and resources page, but it cannot run the email-sending backend. I recommend:
+### 5. Server-side email send
+- Create a `createServerFn` endpoint that receives an email address, validates it server-side, and sends the "Meta Trends — further reading" email using the scaffolded `sendTemplateEmail` helper.
+- Email body includes the `/resources` link and the reading-pack download link.
+- Handle duplicate submissions gracefully.
+- No newsletter subscription, no list storage beyond the single send.
 
-- **Frontend**: GitHub Pages (static build from this repo)
-- **Backend**: Lovable Cloud / Supabase Edge Function for the email endpoint only
-- **Email**: Resend, with the API key stored server-side
-- **Domain**: `meta.rogerarcher.com` CNAME to GitHub Pages; sender-domain verification handled in Resend for `rogerarcher.com`
+### 6. GitHub repository + Pages deployment
+- Create a new GitHub repository through Lovable's GitHub integration.
+- Add a GitHub Actions workflow (`.github/workflows/deploy.yml`) that:
+  - Builds the static client (`nitro: { preset: 'static' }` or equivalent).
+  - Pushes the output to the `gh-pages` branch.
+  - Configures GitHub Pages to serve from that branch.
+- Ensure the workflow does not commit secrets or `.env` files.
 
-This keeps the source in GitHub as requested, while the email service stays secure and independent of the static frontend.
+### 7. SEO / metadata
+- Give `/resources` its own title, description, og:title, og:description, og:type and twitter:card.
+- Keep root metadata for the presentation.
+- Do not add placeholder or relative `og:image` URLs.
 
-## Decision needed from you
+### 8. Acceptance testing
+- Keyboard navigation (Space, ArrowDown, ArrowUp, Shift+Space, PageDown, PageUp).
+- Slide-number jump.
+- All click-reveal states open and close.
+- Mobile layout for `/resources`.
+- QR code links to `/resources`.
+- Email submission returns confirmation and the email arrives.
+- PDF downloads without submitting an email.
 
-Please confirm:
+## Technical details
+- Framework: TanStack Start (already in use).
+- Static hosting: GitHub Pages.
+- Backend: Lovable Cloud / Supabase server functions for the email endpoint.
+- Email: Lovable managed email, not Resend.
+- Secrets: email API keys stay server-side; no client-side exposure.
+- Custom domain `meta.rogerarcher.com` is connected after first publish.
 
-1. Do you want to proceed with **GitHub Pages + Lovable Cloud email endpoint** as described above?
-2. Should I create a **new GitHub repository** via Lovable's GitHub integration, or connect to an **existing repo** you already own?
-3. Do you have a **Resend account/API key** ready, or should I set up the endpoint structure and leave the key for you to add as a secret?
-
-Once you confirm these three points, I will implement the remaining features and the deployment workflow.
+## Out of scope
+- Newsletter signup or marketing-email automation.
+- User accounts / persistent email list storage.
+- Resend integration (superseded by Lovable built-in email).
