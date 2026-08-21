@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { readingGroups, READING_PACK_URL, SHORT_URL } from "@/lib/reading-list";
+import { apiUrl } from "@/lib/api-base";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -16,22 +17,28 @@ export function ResourcesPage() {
     setStatus("sending");
     setMessage("");
     try {
-      const { sendReadingList } = await import("@/lib/resources.functions");
-      const result = await sendReadingList({ data: { email } });
-      if (result.ok) {
+      const response = await fetch(apiUrl("/api/public/reading-list"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (response.ok && result.ok) {
         setStatus("sent");
         setMessage("Check your inbox — the reading list is on its way.");
+      } else if (result.error === "invalid_email") {
+        setStatus("error");
+        setMessage("Please enter a valid email address.");
       } else {
         setStatus("error");
         setMessage("We could not send the email just now. The full list is below.");
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
-      setMessage(
-        error instanceof Error && error.message.includes("valid email")
-          ? "Please enter a valid email address."
-          : "We could not send the email just now. The full list is below.",
-      );
+      setMessage("We could not send the email just now. The full list is below.");
     }
   };
 
