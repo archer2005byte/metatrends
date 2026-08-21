@@ -1,0 +1,19 @@
+// Client-only entry used for the static GitHub Pages build.
+// The Lovable/TanStack Start build does not use this file.
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "@tanstack/react-router";
+
+import { getRouter } from "./router";
+import "./styles.css";
+
+const router = getRouter();
+
+const rootEl = document.getElementById("root");
+if (rootEl) {
+  createRoot(rootEl).render(
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>,
+  );
+}
