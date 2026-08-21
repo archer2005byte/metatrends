@@ -14,13 +14,26 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Load all env vars (including non-VITE_ server secrets) into process.env for server routes.
 Object.assign(process.env, loadEnv(process.env["NODE_ENV"] || "development", process.cwd(), ""));
 
+// GitHub Pages project-site build (set GITHUB_PAGES=true in CI).
+const isGitHubPages = process.env["GITHUB_PAGES"] === "true";
+const ghBase = process.env["GITHUB_PAGES_BASE"] || "/metatrends/";
+
 export default defineConfig({
+  ...(isGitHubPages
+    ? {
+        nitro: {
+          preset: "static",
+          output: { dir: ".output", publicDir: ".output/public" },
+        },
+      }
+    : {}),
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
   },
   vite: {
+    ...(isGitHubPages ? { base: ghBase } : {}),
     resolve: {
       alias: {
         "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
