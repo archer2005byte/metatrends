@@ -34,6 +34,19 @@ function MetaTrendsPresentation() {
   const [longevityStage, setLongevityStage] = useState<0 | 1 | 2>(0);
   const [workStage, setWorkStage] = useState<0 | 1 | 2>(0);
   const [endRevealed, setEndRevealed] = useState(false);
+  const [resourcesUrl, setResourcesUrl] = useState("");
+  const [qrSrc, setQrSrc] = useState("");
+
+  useEffect(() => {
+    const url = `${window.location.origin}/resources`;
+    setResourcesUrl(url);
+    let cancelled = false;
+    import("qrcode").then(({ default: QRCode }) =>
+      QRCode.toDataURL(url, { margin: 1, width: 512, color: { dark: "#000000", light: "#ffffff" } })
+    ).then((dataUrl) => { if (!cancelled) setQrSrc(dataUrl); }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
 
   useEffect(() => {
     const onScroll = () => setSlideNumber(String(Math.min(slideIds.length, Math.max(1, Math.round(window.scrollY / window.innerHeight) + 1))));
