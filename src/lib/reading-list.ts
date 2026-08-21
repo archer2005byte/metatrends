@@ -13,7 +13,7 @@ export interface ReadingGroup {
 
 export const SHORT_URL = "archer2005byte.github.io/metatrends/resources";
 export const RESOURCES_URL = "https://archer2005byte.github.io/metatrends/resources";
-export const READING_PACK_URL = "/meta-trends-reading-pack.pdf";
+export const READING_PACK_URL = `${import.meta.env.BASE_URL}meta-trends-reading-pack.pdf`;
 
 export const readingGroups: ReadingGroup[] = [
   {
