@@ -7,6 +7,7 @@ import { sendReadingList } from "@/lib/resources.functions";
 type Status = "idle" | "sending" | "sent" | "error";
 
 function ResourcesPage() {
+  const presentationUrl = import.meta.env.BASE_URL;
   const send = useServerFn(sendReadingList);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -113,7 +114,7 @@ function ResourcesPage() {
       </section>
 
       <footer className="resources-foot">
-        <a href="/">← Back to the presentation</a>
+        <a href={presentationUrl}>← Back to the presentation</a>
         <span>EY Managers // Meta Trends</span>
       </footer>
     </main>
