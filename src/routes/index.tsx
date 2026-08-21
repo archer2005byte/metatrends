@@ -33,6 +33,7 @@ function MetaTrendsPresentation() {
   const [embodimentStage, setEmbodimentStage] = useState<0 | 1 | 2>(0);
   const [longevityStage, setLongevityStage] = useState<0 | 1 | 2>(0);
   const [workStage, setWorkStage] = useState<0 | 1 | 2>(0);
+  const [endRevealed, setEndRevealed] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setSlideNumber(String(Math.min(slideIds.length, Math.max(1, Math.round(window.scrollY / window.innerHeight) + 1))));
@@ -59,6 +60,7 @@ function MetaTrendsPresentation() {
     if (destination !== 4) setEmbodimentStage(0);
     if (destination !== 6) setLongevityStage(0);
     if (destination !== 7) setWorkStage(0);
+    if (destination !== slideIds.length - 1) setEndRevealed(false);
     window.setTimeout(() => window.scrollTo({ top: destination * window.innerHeight, behavior: "smooth" }), 50);
   };
 
@@ -111,6 +113,12 @@ function MetaTrendsPresentation() {
       if (workStage === 0) { setWorkStage(1); return; }
       if (workStage === 1) { setWorkStage(2); return; }
       goTo(1);
+      return;
+    }
+    if (current === slideIds.length - 1) {
+      if (!endRevealed) { setEndRevealed(true); return; }
+      const back = event.clientX < window.innerWidth * 0.28;
+      if (back) goTo(-1);
       return;
     }
     const forward = event.clientX >= window.innerWidth * 0.28;
@@ -177,7 +185,7 @@ function MetaTrendsPresentation() {
 
       <section className="panel panel-dark human-panel" id="human"><div className="human-visual"><div className="human-orbit" /><div className="human-dot">?</div><div className="human-label label-one">MEANS</div><div className="human-label label-two">ENDS</div><div className="human-label label-three">MEANING</div></div><div className="human-copy"><p className="section-no">07 / THE HUMAN RESIDUE</p><h2>When machines<br />can produce answers,</h2><p className="human-statement">humans remain responsible for deciding which questions are worth asking.</p></div></section>
 
-      <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">08 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><div className="consulting-grid"><span>STRATEGY</span><span>OPERATING MODEL</span><span>GOVERNANCE</span><span>IMPLEMENTATION</span><span>TRUST</span></div><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section><section className="panel end-panel" id="end" />
+      <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">08 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><div className="consulting-grid"><span>STRATEGY</span><span>OPERATING MODEL</span><span>GOVERNANCE</span><span>IMPLEMENTATION</span><span>TRUST</span></div><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section><section className={`panel end-panel ${endRevealed ? "end-open" : ""}`} id="end"><div className="end-reveal" data-no-advance><img src="/resources-qr.svg" alt="QR code linking to the Meta Trends resources page" /><p className="end-reveal-label">Go deeper</p><a href="/resources">meta.rogerarcher.com/resources</a></div></section>
     </main>
   );
 }
