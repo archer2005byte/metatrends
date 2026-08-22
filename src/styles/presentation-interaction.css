@@ -99,6 +99,8 @@ html { scroll-snap-type: y mandatory; }
   html { scroll-snap-type: y proximity; }
   .panel { overflow: hidden; }
   .slide-counter { right: 16px; top: 15px; }
+  .fullscreen-btn { right: 16px; top: 48px; width: 32px; height: 32px; }
+  .fullscreen-btn svg { width: 14px; height: 14px; }
   .cover-footer { flex-direction: column; gap: 14px; }
   .navigator-map { inset: 21% 2% 13%; }
   .ring-outer { width: 100vw; height: 66vw; }
