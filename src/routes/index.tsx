@@ -146,6 +146,18 @@ export function MetaTrendsPresentation() {
     else goToIndex(2);
   };
 
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // ignore if the browser denies or API is unavailable
+    }
+  };
+
   return (
     <main className="site-shell" onClick={handleCanvasClick}>
       <form className="slide-counter" onSubmit={(event) => { event.preventDefault(); goToIndex(Number(slideNumber) - 1); }}>
@@ -153,6 +165,17 @@ export function MetaTrendsPresentation() {
         <input id="slide-number" type="text" inputMode="numeric" value={slideNumber} onChange={(event) => setSlideNumber(event.target.value.replace(/[^0-9]/g, ""))} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); goToIndex(Number((event.target as HTMLInputElement).value) - 1); } }} aria-label="Go to slide number" />
         <span>/ {slideIds.length}</span>
       </form>
+      <button
+        className="fullscreen-btn"
+        type="button"
+        onClick={(event) => { event.stopPropagation(); void toggleFullscreen(); }}
+        aria-label="Toggle fullscreen presentation"
+        title="Toggle fullscreen"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>
+      </button>
       <section className="cover panel panel-lime" id="cover">
         <div className="cover-grid" aria-hidden="true"><span /><span /><span /></div>
         <header className="topbar cover-topbar"><span className="eyebrow dark-eyebrow">EY Managers // 2026</span><span className="page-index">00—10</span></header>
