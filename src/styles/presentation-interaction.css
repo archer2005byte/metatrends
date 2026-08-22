@@ -42,6 +42,10 @@ html { scroll-snap-type: y mandatory; }
 .site-shell a, .site-shell button { cursor: pointer; }
 .slide-nav { display: none; }
 .slide-counter { position: fixed; z-index: 20; right: 24px; top: 20px; display: flex; align-items: center; gap: 7px; color: white; mix-blend-mode: difference; font: 10px 'DM Mono', monospace; letter-spacing: .08em; }
+.fullscreen-btn { position: fixed; z-index: 20; right: 24px; top: 54px; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(242,239,231,.35); border-radius: 50%; background: transparent; color: white; mix-blend-mode: difference; cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
+.fullscreen-btn svg { width: 16px; height: 16px; }
+.fullscreen-btn:hover { border-color: var(--lime); background: rgba(215,255,79,.12); transform: scale(1.08); }
+.fullscreen-btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
 .slide-counter label { opacity: .62; }
 .slide-counter input { width: 30px; padding: 4px 3px; border: 0; border-bottom: 1px solid currentColor; border-radius: 0; outline: 0; background: transparent; color: inherit; text-align: center; font: inherit; }
 .slide-counter input:focus { border-bottom-color: var(--lime); }
