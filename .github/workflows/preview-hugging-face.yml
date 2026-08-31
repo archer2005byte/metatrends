@@ -1,0 +1,85 @@
+name: Preview Hugging Face Story
+
+on:
+  push:
+    branches: [feature/hugging-face-story]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main-src
+
+      - name: Checkout preview branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/hugging-face-story
+          path: preview-src
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.21
+
+      - name: Build production root from main
+        working-directory: main-src
+        env:
+          GITHUB_PAGES_BASE: /metatrends/
+        run: |
+          bun install --no-frozen-lockfile
+          bunx vite build --config vite.gh.config.ts
+          if [ -f dist-gh/index.gh.html ]; then mv dist-gh/index.gh.html dist-gh/index.html; fi
+          cp dist-gh/index.html dist-gh/404.html
+          mkdir -p dist-gh/resources
+          cp dist-gh/index.html dist-gh/resources/index.html
+          cp -r public/. dist-gh/ 2>/dev/null || true
+          touch dist-gh/.nojekyll
+
+      - name: Build feature preview
+        working-directory: preview-src
+        env:
+          GITHUB_PAGES_BASE: /metatrends/preview/hugging-face-story/
+        run: |
+          bun install --no-frozen-lockfile
+          bunx vite build --config vite.gh.config.ts
+          if [ -f dist-gh/index.gh.html ]; then mv dist-gh/index.gh.html dist-gh/index.html; fi
+          cp dist-gh/index.html dist-gh/404.html
+          mkdir -p dist-gh/resources
+          cp dist-gh/index.html dist-gh/resources/index.html
+          cp -r public/. dist-gh/ 2>/dev/null || true
+          touch dist-gh/.nojekyll
+
+      - name: Add preview under production artifact
+        run: |
+          mkdir -p main-src/dist-gh/preview/hugging-face-story
+          cp -r preview-src/dist-gh/. main-src/dist-gh/preview/hugging-face-story/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./main-src/dist-gh
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: https://archer2005byte.github.io/metatrends/preview/hugging-face-story/
+    steps:
+      - name: Deploy combined production + preview artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
