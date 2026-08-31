@@ -1,0 +1,80 @@
+/* Crowd slide — scarcity → abundance → coordination */
+.crowd-panel{position:relative;overflow:hidden;justify-content:flex-start}
+.crowd-grid{position:absolute;inset:0;opacity:.09;background-image:linear-gradient(rgba(242,239,231,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(242,239,231,.22) 1px,transparent 1px);background-size:80px 80px;mask-image:linear-gradient(to bottom,black,transparent 82%);pointer-events:none}
+.crowd-head{position:relative;z-index:2;margin-bottom:8px;transition:opacity .35s ease}
+.crowd-lead{margin:20px 0 0;max-width:520px;color:#bbbcb4;font-size:clamp(15px,1.6vw,20px);line-height:1.4;letter-spacing:-.02em}
+.crowd-field{position:relative;z-index:1;flex:1;min-height:260px;display:flex;align-items:center;justify-content:center}
+.crowd-svg{display:block;width:min(100%,1040px);height:100%;max-height:50vh;transition:opacity .45s ease}
+.crowd-dot{fill:var(--paper);opacity:0;transition:opacity .55s ease}
+.crowd-link{stroke:rgba(215,255,79,.4);stroke-width:1;opacity:0;transition:opacity .6s ease}
+.crowd-ring{fill:none;stroke:rgba(215,255,79,.4);stroke-width:1;transition:opacity .35s ease}
+.ring-b{stroke:rgba(215,255,79,.16)}
+.crowd-core{fill:var(--lime);filter:drop-shadow(0 0 14px rgba(215,255,79,.8))}
+.crowd-core-label{fill:var(--lime);font:11px 'DM Mono',monospace;letter-spacing:.16em;text-anchor:middle;transition:opacity .35s ease}
+.crowd-verb{position:absolute;z-index:2;color:rgba(215,255,79,.85);font:11px 'DM Mono',monospace;letter-spacing:.16em;opacity:0;transition:opacity .55s ease .55s}
+.verb-discover{left:6%;top:9%}
+.verb-share{right:7%;top:13%}
+.verb-reuse{left:9%;bottom:12%}
+.verb-coordinate{right:5%;bottom:8%}
+.crowd-metrics{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:30px;border-top:1px solid rgba(242,239,231,.18);padding-top:18px;opacity:0;transform:translateY(14px);transition:opacity .45s ease .3s,transform .45s ease .3s}
+.crowd-metric b{display:block;font:600 clamp(28px,4.4vw,68px)/.92 'Space Grotesk',sans-serif;letter-spacing:-.06em;color:var(--paper);white-space:nowrap}
+.crowd-metric b em{color:var(--lime);font-style:normal}
+.crowd-metric span{display:block;margin-top:9px;font:11px 'DM Mono',monospace;letter-spacing:.14em;color:#8c8f85}
+.metric-messages{text-align:right}
+/* stage 1+ : proliferation */
+.crowd-stage-1 .crowd-dot,.crowd-stage-2 .crowd-dot,.crowd-stage-3 .crowd-dot{opacity:var(--o,.6)}
+.crowd-stage-1 .crowd-link,.crowd-stage-2 .crowd-link,.crowd-stage-3 .crowd-link{opacity:1}
+.crowd-stage-1 .crowd-ring,.crowd-stage-2 .crowd-ring,.crowd-stage-3 .crowd-ring{opacity:0}
+.crowd-stage-1 .crowd-core-label,.crowd-stage-2 .crowd-core-label,.crowd-stage-3 .crowd-core-label{opacity:0}
+.crowd-stage-1 .crowd-verb,.crowd-stage-2 .crowd-verb{opacity:1}
+.crowd-stage-1 .crowd-metrics,.crowd-stage-2 .crowd-metrics{opacity:1;transform:none}
+/* stage 2 : the case */
+.crowd-case{position:absolute;z-index:6;top:50%;right:clamp(22px,6vw,90px);width:min(34vw,480px);padding:26px 28px;border-left:2px solid var(--lime);background:rgba(17,19,23,.96);display:flex;flex-direction:column;gap:14px;opacity:0;transform:translate(28px,-50%);pointer-events:none;transition:opacity .35s ease,transform .35s ease}
+.crowd-stage-2 .crowd-case{opacity:1;transform:translate(0,-50%);pointer-events:auto}
+.crowd-case-kicker{color:var(--lime);font:11px 'DM Mono',monospace;letter-spacing:.15em}
+.crowd-case strong{color:var(--paper);font:600 clamp(20px,2.2vw,30px)/1.02 'Space Grotesk',sans-serif;letter-spacing:-.045em}
+.crowd-case p{margin:0;color:#c7c8c0;font-size:clamp(13px,1.15vw,16px);line-height:1.5}
+.crowd-case a{align-self:flex-start;color:var(--lime);text-decoration:none;font:11px 'DM Mono',monospace;letter-spacing:.13em;border-bottom:1px solid rgba(215,255,79,.4);padding-bottom:3px;transition:border-color .2s ease}
+.crowd-case a:hover,.crowd-case a:focus-visible{border-color:var(--lime);outline:none}
+.crowd-stage-2 .crowd-svg{opacity:.5}
+.crowd-stage-2 .crowd-verb{opacity:.4}
+.crowd-stage-2 .crowd-metrics{opacity:.35}
+/* stage 3 : the payoff */
+.crowd-stage-3 .crowd-svg{opacity:.12}
+.crowd-stage-3 .crowd-verb{opacity:0}
+.crowd-stage-3 .crowd-metrics{opacity:0;transform:translateY(10px)}
+.crowd-stage-3 .crowd-head{opacity:0}
+.crowd-payoff{position:absolute;z-index:7;inset:0;padding:clamp(38px,6vw,88px) clamp(22px,7vw,110px);display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .4s ease .12s,transform .4s ease .12s}
+.crowd-stage-3 .crowd-payoff{opacity:1;transform:none}
+.crowd-payoff p{margin:0 0 28px;max-width:780px;color:var(--paper);font:500 clamp(21px,2.9vw,42px)/1.05 'Space Grotesk',sans-serif;letter-spacing:-.05em}
+.crowd-payoff b{display:block;max-width:1050px;color:var(--lime);font:700 clamp(52px,9vw,150px)/.88 'Space Grotesk',sans-serif;letter-spacing:-.085em}
+.crowd-next-cue{position:absolute;right:clamp(22px,7vw,110px);bottom:34px;color:#8c8f85;font:11px 'DM Mono',monospace;letter-spacing:.13em}
+@media (max-height:820px) and (min-width:801px){
+  .crowd-head{margin-bottom:0}
+  .crowd-lead{margin-top:12px}
+  .crowd-field{min-height:210px}
+  .crowd-svg{max-height:44vh}
+  .crowd-metric b{font-size:clamp(26px,3.6vw,50px)}
+}
+@media (max-width:800px){
+  .crowd-panel{padding-top:70px;padding-bottom:70px}
+  .crowd-lead{margin-top:14px;font-size:14px}
+  .crowd-field{min-height:200px}
+  .crowd-svg{max-height:32vh}
+  .crowd-verb{font-size:9px;letter-spacing:.12em}
+  .verb-discover{left:2%;top:4%}
+  .verb-share{right:2%;top:8%}
+  .verb-reuse{left:2%;bottom:8%}
+  .verb-coordinate{right:2%;bottom:4%}
+  .crowd-metrics{flex-direction:column;align-items:flex-start;gap:16px}
+  .metric-messages{text-align:left}
+  .crowd-metric b{font-size:clamp(24px,7.6vw,34px)}
+  .crowd-metric span{margin-top:6px}
+  .crowd-case{top:auto;bottom:5%;left:16px;right:16px;width:auto;padding:20px;transform:translateY(18px)}
+  .crowd-stage-2 .crowd-case{transform:none}
+  .crowd-stage-2 .crowd-metrics{opacity:.12}
+  .crowd-case p{font-size:13px}
+  .crowd-payoff p{margin-bottom:18px}
+  .crowd-payoff b{font-size:clamp(42px,13vw,80px)}
+  .crowd-next-cue{right:16px;bottom:22px}
+}
