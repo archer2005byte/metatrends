@@ -6,6 +6,7 @@
 @import "./styles/presentation-interaction.css";
 @import "./styles/presentation-zone-map.css";
 @import "./styles/resources.css";
+@import "./styles/presentation-crowd.css";
 
 @custom-variant dark (&:is(.dark *));
 
