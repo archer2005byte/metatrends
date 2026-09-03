@@ -1,0 +1,123 @@
+name: Apply planetary energy redesign
+
+on:
+  push:
+    branches: [feature/consulting-implications]
+
+permissions:
+  contents: write
+
+jobs:
+  redesign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/consulting-implications
+
+      - name: Materialize planetary systems reveal
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          index = Path('src/routes/index.tsx')
+          text = index.read_text()
+
+          old_class = '<section className={`panel energy-panel ${energyStage === 1 ? "energy-dyson-open" : ""}`} id="energy">'
+          new_class = '<section className={`panel energy-panel energy-stage-${energyStage} ${energyStage === 1 ? "energy-planetary-open" : ""} ${energyStage === 2 ? "energy-dyson-open" : ""}`} id="energy">'
+          if old_class not in text:
+              raise SystemExit('Could not find current energy section class')
+          text = text.replace(old_class, new_class, 1)
+
+          old_trigger = 'className="kardashev-card type-two dyson-trigger" aria-label="View Dyson swarm" onClick={(event) => { event.stopPropagation(); setEnergyStage(1); }}'
+          new_trigger = 'className="kardashev-card type-two dyson-trigger" aria-label="Jump from planetary to stellar design" onClick={(event) => { event.stopPropagation(); setEnergyStage(2); }}'
+          if old_trigger not in text:
+              raise SystemExit('Could not find Dyson trigger')
+          text = text.replace(old_trigger, new_trigger, 1)
+
+          marker = '<div className="kardashev-infographic">'
+          if marker not in text:
+              raise SystemExit('Could not find Kardashev insertion marker')
+
+          planetary = '''<div className="planetary-overlay" aria-live="polite">
+            <div className="planetary-head"><span>PLANETARY SYSTEMS</span><b>CONSTRAINT → DESIGN SPACE</b></div>
+            <div className="planetary-copy">
+              <p className="section-no">THE PLANETARY TURN</p>
+              <h3>The planet becomes<br /><em>a system to optimise.</em></h3>
+            </div>
+            <div className="planetary-system" aria-label="Planetary systems that abundant intelligence may help make more tractable">
+              <div className="planetary-orbit planetary-orbit-a" />
+              <div className="planetary-orbit planetary-orbit-b" />
+              <div className="planetary-earth"><span>EARTH</span><b>INTELLIGENCE</b><small>PLANETARY LAYER</small></div>
+              <article className="planetary-node planet-node-energy"><small>01 / ENERGY</small><b>GENERATION<br />STORAGE<br />GRIDS</b></article>
+              <article className="planetary-node planet-node-climate"><small>02 / CLIMATE</small><b>PREDICTION<br />MITIGATION<br />ADAPTATION</b></article>
+              <article className="planetary-node planet-node-water"><small>03 / WATER + FOOD</small><b>ALLOCATION<br />YIELD<br />RESILIENCE</b></article>
+              <article className="planetary-node planet-node-infra"><small>04 / INFRASTRUCTURE</small><b>SENSING<br />DIGITAL TWINS<br />OPTIMISATION</b></article>
+            </div>
+            <p className="planetary-thesis">Abundant intelligence changes the class of problems civilisation can attempt to solve.</p>
+            <p className="planetary-qualifier">Not every constraint disappears. More of them become tractable.</p>
+            <span className="planetary-next">NEXT / PLANETARY → STELLAR →</span>
+          </div>'''
+
+          text = text.replace(marker, planetary + marker, 1)
+          index.write_text(text)
+
+          styles = Path('src/styles.css')
+          style_text = styles.read_text()
+          import_line = '@import "./styles/presentation-planetary.css";'
+          if import_line not in style_text:
+              anchor = '@import "./styles/presentation-consulting.css";'
+              if anchor not in style_text:
+                  raise SystemExit('Could not find stylesheet import anchor')
+              style_text = style_text.replace(anchor, anchor + '\n' + import_line, 1)
+              styles.write_text(style_text)
+
+          Path('src/styles/presentation-planetary.css').write_text(r'''/* Energy reveal 2 — planetary systems as a design space. */
+.planetary-overlay{
+  position:absolute;inset:0;z-index:12;overflow:hidden;
+  padding:clamp(34px,5vw,72px) clamp(28px,7vw,110px);
+  background:var(--ink);color:var(--paper);
+  opacity:0;visibility:hidden;transform:scale(1.015);
+  transition:opacity .35s ease,transform .45s ease,visibility 0s .45s;
+  pointer-events:none;
+}
+.energy-planetary-open .planetary-overlay{opacity:1;visibility:visible;transform:scale(1);transition-delay:0s}
+.planetary-head{position:relative;z-index:4;display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid rgba(242,239,231,.18);font:10px 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:#94978d}
+.planetary-head b{font-weight:500;color:var(--lime)}
+.planetary-copy{position:relative;z-index:4;margin-top:clamp(30px,5vh,54px);width:49%;max-width:760px}
+.planetary-copy .section-no{color:var(--lime);margin-bottom:18px}
+.planetary-copy h3{margin:0;font:600 clamp(48px,6.2vw,94px)/.91 'Space Grotesk',sans-serif;letter-spacing:-.08em;color:var(--paper)}
+.planetary-copy h3 em{font-style:normal;color:var(--lime)}
+.planetary-system{position:absolute;z-index:2;right:4.8vw;top:20%;width:min(48vw,740px);height:58%;min-height:430px}
+.planetary-system:before{content:"";position:absolute;inset:8% 6%;background:radial-gradient(circle at center,rgba(215,255,79,.065),transparent 52%);filter:blur(2px)}
+.planetary-orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(215,255,79,.28);border-radius:50%;transform:translate(-50%,-50%) rotate(-16deg)}
+.planetary-orbit-a{width:62%;height:77%;box-shadow:0 0 50px rgba(215,255,79,.025)}
+.planetary-orbit-b{width:89%;height:54%;transform:translate(-50%,-50%) rotate(22deg);border-color:rgba(242,239,231,.14)}
+.planetary-earth{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 38% 31%,#343b32 0 15%,#202922 28%,#14181a 66%,#0d0f12 100%);border:1px solid rgba(215,255,79,.62);box-shadow:0 0 0 20px rgba(215,255,79,.025),0 0 65px rgba(215,255,79,.12);color:var(--paper)}
+.planetary-earth:after{content:"";position:absolute;inset:-35px;border:1px dashed rgba(215,255,79,.2);border-radius:50%}
+.planetary-earth span{font:10px 'DM Mono',monospace;letter-spacing:.16em;color:#92958a}
+.planetary-earth b{margin:7px 0 5px;font:650 25px/.9 'Space Grotesk',sans-serif;letter-spacing:-.055em;color:var(--lime)}
+.planetary-earth small{font:8px 'DM Mono',monospace;letter-spacing:.1em;color:#777a72}
+.planetary-node{position:absolute;width:190px;padding:11px 13px;border-left:1px solid rgba(215,255,79,.55);background:rgba(17,19,23,.62);backdrop-filter:blur(4px)}
+.planetary-node small{display:block;margin-bottom:8px;font:9px 'DM Mono',monospace;letter-spacing:.09em;color:#888b82}
+.planetary-node b{font:600 clamp(13px,1.3vw,18px)/1.05 'Space Grotesk',sans-serif;letter-spacing:-.035em;color:var(--paper)}
+.planet-node-energy{left:0;top:6%}.planet-node-climate{right:0;top:4%;border-left-color:var(--lime)}.planet-node-climate b{color:var(--lime)}.planet-node-water{left:3%;bottom:2%}.planet-node-infra{right:0;bottom:0}
+.planetary-thesis{position:absolute;z-index:4;left:clamp(28px,7vw,110px);bottom:11.5%;width:min(49vw,720px);margin:0;font:500 clamp(24px,3.05vw,45px)/1.02 'Space Grotesk',sans-serif;letter-spacing:-.055em;color:var(--paper)}
+.planetary-qualifier{position:absolute;z-index:4;left:clamp(28px,7vw,110px);bottom:5.5%;margin:0;font:10px 'DM Mono',monospace;letter-spacing:.07em;color:#8e9187}
+.planetary-next{position:absolute;z-index:4;right:clamp(28px,7vw,110px);bottom:5.5%;font:10px 'DM Mono',monospace;letter-spacing:.1em;color:var(--lime)}
+@media(max-width:1000px){.planetary-copy{width:52%}.planetary-system{right:1.5vw;width:50vw}.planetary-node{width:150px}.planetary-earth{width:155px;height:155px}.planetary-thesis{width:54vw}}
+@media(max-width:760px){.planetary-copy{width:100%;margin-top:24px}.planetary-copy h3{font-size:clamp(40px,10vw,62px)}.planetary-system{position:relative;right:auto;top:auto;width:100%;height:45vh;min-height:330px;margin-top:12px}.planetary-earth{width:130px;height:130px}.planetary-node{width:130px;padding:8px}.planetary-node b{font-size:12px}.planetary-thesis{left:28px;right:28px;bottom:7%;width:auto;font-size:24px}.planetary-qualifier,.planetary-next{display:none}}
+''')
+          PY
+
+      - name: Remove one-time workflow and commit
+        shell: bash
+        run: |
+          rm .github/workflows/apply-planetary-energy-redesign.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add planetary systems energy reveal"
+          git push origin HEAD:feature/consulting-implications
