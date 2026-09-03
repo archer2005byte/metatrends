@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - feature/consulting-implications
   workflow_dispatch:
 
 permissions:
@@ -14,6 +16,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  PREVIEW_BRANCH: feature/consulting-implications
+  PREVIEW_SLUG: consulting-implications
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,12 +27,13 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v4
         with:
+          ref: main
           path: main-src
 
-      - name: Checkout Hugging Face preview branch
+      - name: Checkout preview branch
         uses: actions/checkout@v4
         with:
-          ref: feature/hugging-face-story
+          ref: ${{ env.PREVIEW_BRANCH }}
           path: preview-src
 
       - name: Setup Bun
@@ -48,10 +55,10 @@ jobs:
           cp -r public/. dist-gh/ 2>/dev/null || true
           touch dist-gh/.nojekyll
 
-      - name: Build Hugging Face branch preview
+      - name: Build preview branch
         working-directory: preview-src
         env:
-          GITHUB_PAGES_BASE: /metatrends/preview/hugging-face-story/
+          GITHUB_PAGES_BASE: /metatrends/preview/${{ env.PREVIEW_SLUG }}/
         run: |
           bun install --no-frozen-lockfile
           bunx vite build --config vite.gh.config.ts
@@ -64,8 +71,8 @@ jobs:
 
       - name: Add preview under production artifact
         run: |
-          mkdir -p main-src/dist-gh/preview/hugging-face-story
-          cp -r preview-src/dist-gh/. main-src/dist-gh/preview/hugging-face-story/
+          mkdir -p "main-src/dist-gh/preview/${PREVIEW_SLUG}"
+          cp -r preview-src/dist-gh/. "main-src/dist-gh/preview/${PREVIEW_SLUG}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
