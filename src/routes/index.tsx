@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "markets", "consulting", "bet", "end"];
+const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "markets", "consulting", "end"];
 
 const milestones = [
   { year: "2017", label: "Transformer", note: "the architecture" },
@@ -355,21 +355,27 @@ export function MetaTrendsPresentation() {
         <p className="market-payoff">The value is moving<br />from <em>assets</em> to <strong>outcomes.</strong></p>
       </section>
 
-      <section className="panel panel-dark implications-panel value-chain-panel" id="consulting">
-        <div className="implications-kicker">12 / THE CONSULTING SHIFT</div>
-        <h2 className="implications-title">The value moves<br /><span>upstream.</span></h2>
-        <div className="value-chain-block yesterday"><span>YESTERDAY</span><div>DPR <i>→</i> RFP <i>→</i> PROCUREMENT <i>→</i> PMU <i>→</i> IMPLEMENTATION</div></div>
-        <div className="value-chain-divider">↓</div>
-        <div className="value-chain-block tomorrow"><span>TOMORROW</span><div>FORESIGHT <i>→</i> STRATEGY <i>→</i> ARCHITECTURE <i>→</i> GOVERNANCE <i>→</i> ASSURANCE <i>→</i> TRANSFORMATION</div></div>
-        <p className="value-chain-payoff">When intelligence becomes abundant,<br /><strong>judgement moves up the value chain.</strong></p>
-      </section>
-
-      <section className="panel panel-lime implications-panel bet-panel" id="bet">
-        <div className="implications-kicker dark">13 / THE QUESTION FOR THE ROOM</div>
-        <h2 className="bet-question">If these shifts are real…<br /><span>where should we place our next big bet?</span></h2>
-        <div className="bet-grid">
-          <span>CAPABILITIES</span><span>SOLUTIONS</span><span>ALLIANCES</span><span>IP</span><span>NEW MARKETS</span><span>NEW ADVISORY</span>
+      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">
+        <div className="implications-kicker">12 / THE PRACTICE RESPONSE</div>
+        <h2 className="practice-build-title">What should we<br /><span>build now?</span></h2>
+        <div className="practice-build-grid">
+          <article className="practice-build-card">
+            <small>01 / DECISION INTELLIGENCE</small>
+            <h3>Design the layer<br />above the systems.</h3>
+            <p>Cameras, sensors, drones, command centres and policing systems increasingly need an intelligence layer that connects signals to decisions.</p>
+          </article>
+          <article className="practice-build-card">
+            <small>02 / AUTONOMY ASSURANCE</small>
+            <h3>Govern systems<br />that can act.</h3>
+            <p>Help clients set the controls, accountability and operating boundaries for systems that increasingly sense, decide and act on their own.</p>
+          </article>
+          <article className="practice-build-card">
+            <small>03 / AI-NATIVE OPERATIONS</small>
+            <h3>Redesign work<br />around agents.</h3>
+            <p>Redesign workflows, roles and decision rights around humans working with agents rather than simply adding AI to existing processes.</p>
+          </article>
         </div>
+        <p className="practice-build-payoff">These are not new markets.<br /><strong>They are the next layer of the markets we already know.</strong></p>
       </section>
 <section className={`panel end-panel ${endRevealed ? "end-open" : ""}`} id="end"><div className="end-reveal" data-no-advance>{qrSrc ? <img src={qrSrc} alt="QR code linking to the Meta Trends resources page" /> : <div className="end-qr-placeholder" />}<p className="end-reveal-label">Go deeper</p><a href={`${assetBase}resources`}>{resourcesUrl ? resourcesUrl.replace(/^https?:\/\//, "") : "/resources"}</a></div></section>
     </main>
