@@ -44,6 +44,12 @@ export const readingGroups: ReadingGroup[] = [
         url: "https://arxiv.org/abs/1706.03762",
         note: "The transformer paper — the architecture beneath the curve.",
       },
+      {
+        title: "The Rise and Fall of Agent Civilizations",
+        author: "Dwarkesh Patel",
+        url: "https://www.dwarkesh.com/p/openai-huggingface",
+        note: "A vivid case study of what becomes possible when machine cognition is cheap enough to deploy, communicate and coordinate in crowds.",
+      },
     ],
   },
   {
