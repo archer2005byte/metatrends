@@ -1,0 +1,71 @@
+/* Direct visual logic for the two opening supporting reveals. */
+
+/* 01 / THE ARRIVAL — capability thresholds. */
+#evidence .threshold-overlay {
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto auto;
+  gap:12px;
+  padding:clamp(24px,2.6vw,38px) clamp(24px,3vw,46px) clamp(24px,2.8vw,40px);
+  background:rgba(17,19,23,.985);
+  border-color:rgba(215,255,79,.42);
+  overflow:hidden;
+}
+.threshold-head,.abundance-head{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding-bottom:15px;border-bottom:1px solid rgba(242,239,231,.2);
+  color:#b9bbb3;font:10px 'DM Mono',monospace;letter-spacing:.11em;text-transform:uppercase;
+}
+.threshold-head b,.abundance-head b{color:var(--lime);font-weight:500;letter-spacing:.07em}
+.threshold-steps{
+  min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end;
+  padding-top:4px;
+}
+.threshold-step{
+  min-width:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:14px 12px 17px;border-left:1px solid rgba(215,255,79,.34);
+  background:rgba(242,239,231,.025);
+}
+.threshold-step:nth-child(1){height:36%}.threshold-step:nth-child(2){height:47%}.threshold-step:nth-child(3){height:58%}
+.threshold-step:nth-child(4){height:69%}.threshold-step:nth-child(5){height:80%}.threshold-step:nth-child(6){height:92%;background:rgba(215,255,79,.09);border-left-color:var(--lime)}
+.threshold-step small{margin-bottom:12px;color:#8f9288;font:9px 'DM Mono',monospace;letter-spacing:.08em}
+.threshold-step strong{color:var(--paper);font:650 clamp(23px,2.55vw,40px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em}
+.threshold-step:last-child strong{color:var(--lime)}
+.threshold-thesis,.abundance-thesis{
+  margin:0;padding-top:14px;border-top:1px solid rgba(242,239,231,.14);
+  color:var(--paper);font:500 clamp(25px,3.2vw,48px)/.98 'Space Grotesk',sans-serif;letter-spacing:-.055em;
+}
+.threshold-thesis em,.abundance-thesis em{display:block;color:var(--lime);font-style:normal}
+.reveal-source{margin:0;color:#85887f;font:8.5px/1.3 'DM Mono',monospace;letter-spacing:.045em}
+
+/* 02 / THE COMMODITY — economic behaviour under abundance. */
+#commodity .abundance-overlay{
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:12px;
+  padding:clamp(24px,2.6vw,38px) clamp(24px,3vw,46px) clamp(24px,2.8vw,40px);
+  background:rgba(17,19,23,.985);overflow:hidden;
+}
+.abundance-steps{min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-top:5px}
+.abundance-step{
+  min-width:0;display:flex;flex-direction:column;padding:18px 17px 17px;
+  background:rgba(242,239,231,.035);border:1px solid rgba(242,239,231,.17);color:var(--paper);
+}
+.abundance-step:last-child{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.abundance-glyph{height:clamp(76px,10.5vh,112px);margin-bottom:14px;border-bottom:1px solid rgba(242,239,231,.16)}
+.abundance-step:last-child .abundance-glyph{border-bottom-color:rgba(17,19,23,.22)}
+.glyph-conserve{background:radial-gradient(circle at 50% 42%,var(--lime) 0 21px,transparent 22px)}
+.glyph-replicate{background:radial-gradient(circle,var(--lime) 0 8px,transparent 9px) 8% 10% / 33% 50%}
+.glyph-parallelise{background:linear-gradient(var(--lime),var(--lime)) 8% 20%/78% 7px no-repeat,linear-gradient(var(--lime),var(--lime)) 8% 43%/58% 7px no-repeat,linear-gradient(var(--lime),var(--lime)) 8% 66%/88% 7px no-repeat,linear-gradient(var(--lime),var(--lime)) 8% 89%/68% 7px no-repeat}
+.glyph-waste{background:radial-gradient(circle at 12% 24%,rgba(17,19,23,.18) 0 9px,transparent 10px),radial-gradient(circle at 37% 70%,rgba(17,19,23,.28) 0 10px,transparent 11px),radial-gradient(circle at 58% 32%,rgba(17,19,23,.14) 0 8px,transparent 9px),radial-gradient(circle at 76% 74%,rgba(17,19,23,.38) 0 10px,transparent 11px),radial-gradient(circle at 88% 18%,var(--ink) 0 13px,transparent 14px)}
+.abundance-step small{color:#8f9288;font:9px 'DM Mono',monospace;letter-spacing:.09em}.abundance-step:last-child small{color:var(--ink)}
+.abundance-step h3{margin:12px 0 15px;color:inherit;font:650 clamp(26px,2.8vw,43px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em}
+.abundance-step p{margin:auto 0 0;color:#b5b7af;font:500 clamp(12px,1vw,15px)/1.25 'Manrope',sans-serif}.abundance-step:last-child p{color:var(--ink)}
+
+@media(max-width:900px){
+  #evidence .threshold-overlay{grid-template-rows:auto minmax(0,1fr) auto auto}.threshold-steps{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr 1fr}.threshold-step{height:auto!important;min-height:0}.threshold-head,.abundance-head{font-size:8px}.threshold-thesis,.abundance-thesis{font-size:clamp(22px,4vw,34px)}
+  .abundance-steps{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr 1fr}.abundance-glyph{height:55px}.abundance-step{padding:11px}.abundance-step h3{margin:7px 0 8px}.abundance-step p{font-size:10px}
+}
+@media(max-height:820px) and (min-width:901px){
+  #evidence .threshold-overlay,#commodity .abundance-overlay{inset:7% clamp(18px,4vw,64px) 5%;padding:18px 24px;gap:8px}
+  .threshold-head,.abundance-head{padding-bottom:10px;font-size:8px}.threshold-step{padding:10px 9px 12px}.threshold-step small{font-size:7px;margin-bottom:7px}.threshold-step strong{font-size:clamp(20px,2.25vw,33px)}
+  .threshold-thesis,.abundance-thesis{padding-top:10px;font-size:clamp(22px,2.7vw,38px)}.reveal-source{font-size:7px}
+  .abundance-step{padding:11px 12px}.abundance-glyph{height:68px;margin-bottom:9px}.abundance-step small{font-size:7px}.abundance-step h3{font-size:clamp(22px,2.45vw,35px);margin:8px 0 10px}.abundance-step p{font-size:10px}
+}
