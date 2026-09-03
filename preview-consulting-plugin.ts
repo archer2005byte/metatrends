@@ -42,7 +42,7 @@ export function consultingImplicationsPreview(): Plugin {
 
       const oldIds = 'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "end"];';
       const newIds = 'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "markets", "consulting", "bet", "end"];';
-      const marker = '      <section className={`panel end-panel ${endRevealed ? "end-open" : ""}`} id="end">';
+      const marker = '    </main>';
 
       if (!code.includes(oldIds) || !code.includes(marker)) {
         throw new Error("Consulting preview transform could not find its insertion markers.");
