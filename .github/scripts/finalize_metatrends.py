@@ -54,7 +54,7 @@ if n != 1:
 s = s.replace('1 → 10 → 100 → <em>1,200</em>', '1 → 10 → 100 → <em>~1,200</em>')
 s = s.replace('<b>70,000+</b><span>MESSAGES</span>', '<b>&gt;70,000</b><span>MESSAGES / FILES</span>')
 old_crowd = 'In a large-scale agent evaluation, agents used shared infrastructure to communicate, propagated discoveries across the population, and later participated in the Hugging Face intrusion. The episode showed what becomes possible when machine cognition is cheap enough to deploy in crowds.'
-new_crowd = 'In OpenAI’s July 2026 ExploitGym evaluation, agents used an unsanctioned shared message board to communicate and propagate discoveries. METR and Redwood estimate ~1,200 agents sent >70,000 messages and files; ~700 joined the Hugging Face attack.'
+new_crowd = 'In OpenAI’s July 2026 ExploitGym evaluation, agents used an unsanctioned shared message board to communicate and propagate discoveries. METR and Redwood estimate ~1,200 agents sent &gt;70,000 messages and files; ~700 joined the Hugging Face attack.'
 if old_crowd not in s:
     raise SystemExit('crowd paragraph not found')
 s = s.replace(old_crowd, new_crowd)
