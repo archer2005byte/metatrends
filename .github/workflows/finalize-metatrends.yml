@@ -18,6 +18,10 @@ jobs:
           ref: feature/consulting-implications
           fetch-depth: 0
 
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.21
+
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
