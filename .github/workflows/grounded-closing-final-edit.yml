@@ -4,14 +4,12 @@ on:
   push:
     branches:
       - feature/grounded-closing
-  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  edit-build:
-    if: ${{ github.actor != 'github-actions[bot]' }}
+  edit_build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
@@ -26,36 +24,26 @@ jobs:
           bun-version: 1.2.21
 
       - name: Amend closing
+        shell: bash
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
           import re
 
-          p = Path('src/routes/index.tsx')
-          s = p.read_text()
-
-          s = s.replace(
+          path = Path("src/routes/index.tsx")
+          text = path.read_text()
+          text = text.replace(
               'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "markets", "consulting", "end"];',
               'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "consulting", "end"];'
           )
 
-          market_pattern = re.compile(
-              r'\n      <section className="panel market-shift-panel implications-panel" id="markets">.*?</section>\n\n      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">',
-              re.S,
-          )
-          s, count = market_pattern.subn(
-              '\n      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">',
-              s,
-              count=1,
-          )
-          if count != 1:
-              raise SystemExit(f'expected to remove one market slide, removed {count}')
+          market = re.compile(r'\n      <section className="panel market-shift-panel implications-panel" id="markets">.*?</section>\n\n      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">', re.S)
+          text, n = market.subn('\n      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">', text, count=1)
+          if n != 1:
+              raise SystemExit("market slide removal failed")
 
-          practice_pattern = re.compile(
-              r'      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">.*?</section>\n<section className=\{`panel end-panel',
-              re.S,
-          )
-          practice = '''      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">
+          practice = re.compile(r'      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">.*?</section>\n<section className=\{`panel end-panel', re.S)
+          replacement = '''      <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">
         <div className="implications-kicker">11 / THE PRACTICE RESPONSE</div>
         <h2 className="practice-build-title">What should we<br /><span>build next?</span></h2>
         <div className="practice-build-grid">
@@ -78,20 +66,20 @@ jobs:
         <p className="practice-build-payoff">These are not new markets.<br /><strong>They are the next layer of the markets we already know.</strong></p>
       </section>
 <section className={`panel end-panel'''
-          s, count = practice_pattern.subn(practice, s, count=1)
-          if count != 1:
-              raise SystemExit(f'expected to replace one practice slide, replaced {count}')
+          text, n = practice.subn(replacement, text, count=1)
+          if n != 1:
+              raise SystemExit("practice slide replacement failed")
+          path.write_text(text)
 
-          p.write_text(s)
-
-          Path('src/styles/presentation-consulting.css').write_text('''/* Grounded closing sequence. */
+          css = """/* Grounded closing sequence. */
 .site-shell>#today{order:12!important}.site-shell>#consulting{order:13!important}.site-shell>#end{order:14!important}
 .implications-panel{overflow:hidden}.implications-kicker{font:11px 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:28px}
 .practice-build-panel{justify-content:center}.practice-build-title{font:620 clamp(48px,6.7vw,96px)/.92 'Space Grotesk',sans-serif;letter-spacing:-.078em;margin:0;max-width:1050px}.practice-build-title span{color:var(--lime)}.practice-build-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;background:rgba(242,239,231,.16);margin-top:38px;border:1px solid rgba(242,239,231,.16)}.practice-build-card{background:#111317;padding:26px 24px 24px;min-height:250px;display:flex;flex-direction:column}.practice-build-card small{font:10px 'DM Mono',monospace;letter-spacing:.11em;color:var(--lime)}.practice-build-card h3{font:600 clamp(24px,2.65vw,38px)/.98 'Space Grotesk',sans-serif;letter-spacing:-.055em;margin:22px 0 18px;color:#f2efe7}.practice-build-card p{font:400 clamp(13px,1.15vw,17px)/1.45 'Space Grotesk',sans-serif;color:#a9aaa4;margin:auto 0 0;max-width:36ch}.practice-build-payoff{margin:34px 0 0;font:500 clamp(24px,3vw,42px)/1.04 'Space Grotesk',sans-serif;letter-spacing:-.05em;color:#a9aaa4;max-width:980px}.practice-build-payoff strong{color:#f2efe7;font-weight:600}
 @media(max-height:820px) and (min-width:901px){.practice-build-title{font-size:clamp(42px,5.7vw,76px)}.practice-build-grid{margin-top:24px}.practice-build-card{min-height:205px;padding:20px}.practice-build-card h3{margin:16px 0 12px;font-size:clamp(22px,2.25vw,32px)}.practice-build-card p{font-size:13px;line-height:1.35}.practice-build-payoff{margin-top:22px;font-size:clamp(21px,2.5vw,32px)}}
 @media(max-width:900px){.practice-build-grid{grid-template-columns:1fr}.practice-build-card{min-height:0}.practice-build-payoff{margin-top:22px}}
 @media(max-width:650px){.practice-build-grid{margin-top:24px}.practice-build-card{padding:18px}.practice-build-card h3{font-size:24px;margin:12px 0 10px}.practice-build-card p{font-size:12px}.practice-build-payoff{font-size:22px}}
-''')
+"""
+          Path("src/styles/presentation-consulting.css").write_text(css)
           PY
 
       - name: Build
@@ -99,14 +87,13 @@ jobs:
           bun install --no-frozen-lockfile
           bunx vite build --config vite.gh.config.ts
 
-      - name: Verify final closing
+      - name: Verify
         run: |
           grep -q '"today", "consulting", "end"' src/routes/index.tsx
-          ! grep -q 'id="markets"' src/routes/index.tsx
+          test "$(grep -c 'id="markets"' src/routes/index.tsx)" -eq 0
           grep -q '01 / CLOSED-LOOP OPERATIONS' src/routes/index.tsx
           grep -q '02 / AUTONOMY ASSURANCE' src/routes/index.tsx
           grep -q '03 / AGENTIC OPERATIONS' src/routes/index.tsx
-          grep -q '11 / THE PRACTICE RESPONSE' src/routes/index.tsx
 
       - name: Commit branch changes
         run: |
