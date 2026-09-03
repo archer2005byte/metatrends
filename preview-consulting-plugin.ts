@@ -1,23 +1,8 @@
 import type { Plugin } from "vite";
 
 const previewSlides = `
-      <section className="panel panel-dark implications-panel convergence-panel" id="convergence">
-        <div className="implications-kicker">11 / WHEN FORCES COLLIDE</div>
-        <h2 className="implications-title">The future does not arrive<br /><span>one trend at a time.</span></h2>
-        <p className="implications-lead">The largest shifts appear at the intersections — when one force changes the economics of another.</p>
-        <div className="intersection-grid">
-          <article><span>INTELLIGENCE × EMBODIMENT</span><b>AUTONOMOUS PRODUCTION</b></article>
-          <article><span>INTELLIGENCE × LONGEVITY</span><b>PROGRAMMABLE BIOLOGY</b></article>
-          <article><span>INTELLIGENCE × WORK</span><b>AGENTIC ORGANISATIONS</b></article>
-          <article><span>INTELLIGENCE × ENERGY</span><b>COMPUTE INFRASTRUCTURE</b></article>
-          <article><span>LONGEVITY × WORK</span><b>REDESIGNED CAREERS</b></article>
-          <article><span>ABUNDANCE × HUMAN PURPOSE</span><b>DIGNITY / AGENCY / MEANING</b></article>
-        </div>
-        <div className="implications-footer"><span>CONVERGENCE CREATES THE OPERATING ENVIRONMENT</span><b>→</b></div>
-      </section>
-
       <section className="panel market-shift-panel implications-panel" id="markets">
-        <div className="implications-kicker dark">12 / FROM TECHNOLOGY TO OUTCOMES</div>
+        <div className="implications-kicker dark">11 / FROM TECHNOLOGY TO OUTCOMES</div>
         <h2 className="implications-title dark">What happens<br /><span>to our world?</span></h2>
         <div className="market-shifts">
           <div><small>01</small><strong>CCTV MONITORING</strong><i>→</i><b>URBAN INTELLIGENCE</b></div>
@@ -31,7 +16,7 @@ const previewSlides = `
       </section>
 
       <section className="panel panel-dark implications-panel value-chain-panel" id="consulting">
-        <div className="implications-kicker">13 / THE CONSULTING SHIFT</div>
+        <div className="implications-kicker">12 / THE CONSULTING SHIFT</div>
         <h2 className="implications-title">The value moves<br /><span>upstream.</span></h2>
         <div className="value-chain-block yesterday"><span>YESTERDAY</span><div>DPR <i>→</i> RFP <i>→</i> PROCUREMENT <i>→</i> PMU <i>→</i> IMPLEMENTATION</div></div>
         <div className="value-chain-divider">↓</div>
@@ -40,12 +25,11 @@ const previewSlides = `
       </section>
 
       <section className="panel panel-lime implications-panel bet-panel" id="bet">
-        <div className="implications-kicker dark">14 / THE QUESTION FOR THE ROOM</div>
+        <div className="implications-kicker dark">13 / THE QUESTION FOR THE ROOM</div>
         <h2 className="bet-question">If these shifts are real…<br /><span>where should we place our next big bet?</span></h2>
         <div className="bet-grid">
           <span>CAPABILITIES</span><span>SOLUTIONS</span><span>ALLIANCES</span><span>IP</span><span>NEW MARKETS</span><span>NEW ADVISORY</span>
         </div>
-        <p className="bet-cue">STOP PRESENTING. START THE DISCUSSION.</p>
       </section>
 `;
 
@@ -57,8 +41,8 @@ export function consultingImplicationsPreview(): Plugin {
       if (!id.replaceAll("\\", "/").endsWith("/src/routes/index.tsx")) return null;
 
       const oldIds = 'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "end"];';
-      const newIds = 'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "convergence", "markets", "consulting", "bet", "today", "end"];';
-      const marker = '      <section className="panel close-panel" id="today">';
+      const newIds = 'const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "markets", "consulting", "bet", "end"];';
+      const marker = '      <section className={`panel end-panel ${endRevealed ? "end-open" : ""}`} id="end">';
 
       if (!code.includes(oldIds) || !code.includes(marker)) {
         throw new Error("Consulting preview transform could not find its insertion markers.");
