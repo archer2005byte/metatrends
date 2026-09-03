@@ -1,276 +1,71 @@
-/* Distinct visual logic for the two opening supporting reveals. */
+/* Direct visual logic for the two opening supporting reveals. */
 
-/* 01 / THE ARRIVAL — capability thresholds, not another evidence-card grid. */
-#evidence .evidence-overlay {
-  display: grid !important;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 10px;
-  padding: clamp(24px, 2.6vw, 38px) clamp(24px, 3vw, 46px) clamp(26px, 3vw, 44px) !important;
-  background: rgba(17, 19, 23, .985) !important;
-  border-color: rgba(215, 255, 79, .42) !important;
-  overflow: hidden !important;
+/* 01 / THE ARRIVAL — capability thresholds. */
+#evidence .threshold-overlay {
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto auto;
+  gap:12px;
+  padding:clamp(24px,2.6vw,38px) clamp(24px,3vw,46px) clamp(24px,2.8vw,40px);
+  background:rgba(17,19,23,.985);
+  border-color:rgba(215,255,79,.42);
+  overflow:hidden;
 }
-#evidence .evidence-overlay::before {
-  content: "CAPABILITY THRESHOLDS";
-  grid-column: 1 / 4;
-  grid-row: 1;
-  align-self: center;
-  color: #b9bbb3;
-  font: 11px 'DM Mono', monospace;
-  letter-spacing: .12em;
+.threshold-head,.abundance-head{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding-bottom:15px;border-bottom:1px solid rgba(242,239,231,.2);
+  color:#b9bbb3;font:10px 'DM Mono',monospace;letter-spacing:.11em;text-transform:uppercase;
 }
-#evidence .evidence-overlay::after {
-  content: "answer → reason → see → act → persist → coordinate";
-  grid-column: 4 / -1;
-  grid-row: 1;
-  align-self: center;
-  justify-self: end;
-  color: var(--lime);
-  font: 11px 'DM Mono', monospace;
-  letter-spacing: .08em;
+.threshold-head b,.abundance-head b{color:var(--lime);font-weight:500;letter-spacing:.07em}
+.threshold-steps{
+  min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end;
+  padding-top:4px;
 }
-#evidence .benchmark-reveal-head,
-#evidence .benchmark-cards {
-  display: contents !important;
+.threshold-step{
+  min-width:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:14px 12px 17px;border-left:1px solid rgba(215,255,79,.34);
+  background:rgba(242,239,231,.025);
 }
-#evidence .benchmark-reveal-head > span,
-#evidence .benchmark-reveal-head > b,
-#evidence .benchmark-cards > article {
-  position: relative;
-  grid-row: 2;
-  align-self: end;
-  min-width: 0;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 16px 13px 18px !important;
-  border: 0 !important;
-  border-left: 1px solid rgba(215, 255, 79, .34) !important;
-  background: rgba(242, 239, 231, .025) !important;
-  box-shadow: none !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  transform: none !important;
+.threshold-step:nth-child(1){height:36%}.threshold-step:nth-child(2){height:47%}.threshold-step:nth-child(3){height:58%}
+.threshold-step:nth-child(4){height:69%}.threshold-step:nth-child(5){height:80%}.threshold-step:nth-child(6){height:92%;background:rgba(215,255,79,.09);border-left-color:var(--lime)}
+.threshold-step small{margin-bottom:12px;color:#8f9288;font:9px 'DM Mono',monospace;letter-spacing:.08em}
+.threshold-step strong{color:var(--paper);font:650 clamp(23px,2.55vw,40px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em}
+.threshold-step:last-child strong{color:var(--lime)}
+.threshold-thesis,.abundance-thesis{
+  margin:0;padding-top:14px;border-top:1px solid rgba(242,239,231,.14);
+  color:var(--paper);font:500 clamp(25px,3.2vw,48px)/.98 'Space Grotesk',sans-serif;letter-spacing:-.055em;
 }
-#evidence .benchmark-reveal-head > span { grid-column: 1; height: 36%; }
-#evidence .benchmark-reveal-head > b { grid-column: 2; height: 47%; }
-#evidence .benchmark-cards > article:nth-child(1) { grid-column: 3; height: 58%; }
-#evidence .benchmark-cards > article:nth-child(2) { grid-column: 4; height: 69%; }
-#evidence .benchmark-cards > article:nth-child(3) { grid-column: 5; height: 80%; }
-#evidence .benchmark-cards > article:nth-child(4) {
-  grid-column: 6;
-  height: 92%;
-  background: rgba(215, 255, 79, .09) !important;
-  border-left-color: var(--lime) !important;
-}
-#evidence .benchmark-cards > article > * { display: none !important; }
-#evidence .benchmark-reveal-head > span::before,
-#evidence .benchmark-reveal-head > b::before,
-#evidence .benchmark-cards > article::before {
-  display: block;
-  margin-bottom: 13px;
-  color: #8f9288;
-  font: 9px 'DM Mono', monospace;
-  letter-spacing: .08em;
-}
-#evidence .benchmark-reveal-head > span::after,
-#evidence .benchmark-reveal-head > b::after,
-#evidence .benchmark-cards > article::after {
-  display: block;
-  color: var(--paper);
-  font: 650 clamp(24px, 2.65vw, 42px) / .9 'Space Grotesk', sans-serif;
-  letter-spacing: -.075em;
-}
-#evidence .benchmark-reveal-head > span::before { content: "01 / LANGUAGE"; }
-#evidence .benchmark-reveal-head > span::after { content: "ANSWER"; }
-#evidence .benchmark-reveal-head > b::before { content: "02 / INFERENCE"; }
-#evidence .benchmark-reveal-head > b::after { content: "REASON"; }
-#evidence .benchmark-cards > article:nth-child(1)::before { content: "03 / PERCEPTION"; }
-#evidence .benchmark-cards > article:nth-child(1)::after { content: "SEE"; }
-#evidence .benchmark-cards > article:nth-child(2)::before { content: "04 / AGENCY"; }
-#evidence .benchmark-cards > article:nth-child(2)::after { content: "ACT"; }
-#evidence .benchmark-cards > article:nth-child(3)::before { content: "05 / DURATION"; }
-#evidence .benchmark-cards > article:nth-child(3)::after { content: "PERSIST"; }
-#evidence .benchmark-cards > article:nth-child(4)::before { content: "06 / COLLECTIVE"; }
-#evidence .benchmark-cards > article:nth-child(4)::after { content: "COORDINATE"; color: var(--lime); }
-#evidence .benchmark-thesis {
-  grid-column: 1 / -1;
-  grid-row: 3;
-  margin: 8px 0 0 !important;
-  padding-top: 18px;
-  border-top: 1px solid rgba(242, 239, 231, .14);
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 1 !important;
-}
-#evidence .benchmark-thesis br,
-#evidence .benchmark-thesis em { display: none !important; }
-#evidence .benchmark-thesis::before,
-#evidence .benchmark-thesis::after {
-  display: block;
-  font: 500 clamp(27px, 3.45vw, 52px) / .98 'Space Grotesk', sans-serif;
-  letter-spacing: -.055em;
-}
-#evidence .benchmark-thesis::before { content: "There was no single crossing."; color: var(--paper); }
-#evidence .benchmark-thesis::after { content: "There was a sequence of thresholds."; color: var(--lime); }
+.threshold-thesis em,.abundance-thesis em{display:block;color:var(--lime);font-style:normal}
+.reveal-source{margin:0;color:#85887f;font:8.5px/1.3 'DM Mono',monospace;letter-spacing:.045em}
 
 /* 02 / THE COMMODITY — economic behaviour under abundance. */
-#commodity .commodity-overlay {
-  display: grid !important;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  padding: clamp(24px, 2.6vw, 38px) clamp(24px, 3vw, 46px) clamp(26px, 3vw, 44px) !important;
-  background: rgba(17, 19, 23, .985) !important;
-  overflow: hidden !important;
+#commodity .abundance-overlay{
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:12px;
+  padding:clamp(24px,2.6vw,38px) clamp(24px,3vw,46px) clamp(24px,2.8vw,40px);
+  background:rgba(17,19,23,.985);overflow:hidden;
 }
-#commodity .commodity-overlay-head {
-  display: flex !important;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(242, 239, 231, .2);
+.abundance-steps{min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-top:5px}
+.abundance-step{
+  min-width:0;display:flex;flex-direction:column;padding:18px 17px 17px;
+  background:rgba(242,239,231,.035);border:1px solid rgba(242,239,231,.17);color:var(--paper);
 }
-#commodity .commodity-overlay-head > span,
-#commodity .commodity-overlay-head > b { color: transparent !important; font-size: 0 !important; }
-#commodity .commodity-overlay-head > span::after {
-  content: "INTELLIGENCE / THE ECONOMICS";
-  color: #b9bbb3;
-  font: 11px 'DM Mono', monospace;
-  letter-spacing: .12em;
-}
-#commodity .commodity-overlay-head > b::after {
-  content: "CONSERVE → REPLICATE → PARALLELISE → WASTE";
-  color: var(--lime);
-  font: 11px 'DM Mono', monospace;
-  font-weight: 500;
-  letter-spacing: .08em;
-}
-#commodity .commodity-evidence-grid {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 12px !important;
-  align-items: stretch;
-  margin: 24px 0 18px !important;
-  background: transparent !important;
-}
-#commodity .commodity-evidence-grid > article {
-  position: relative;
-  display: flex !important;
-  flex-direction: column;
-  min-width: 0;
-  padding: 20px 18px 18px !important;
-  background: rgba(242, 239, 231, .035) !important;
-  border: 1px solid rgba(242, 239, 231, .17) !important;
-  box-shadow: none !important;
-  color: var(--paper) !important;
-}
-#commodity .commodity-evidence-grid > article:nth-child(4) {
-  background: var(--lime) !important;
-  border-color: var(--lime) !important;
-  color: var(--ink) !important;
-}
-#commodity .commodity-evidence-grid > article::before {
-  content: "";
-  display: block;
-  width: 100%;
-  height: clamp(90px, 12vh, 130px);
-  margin-bottom: 15px;
-  border-bottom: 1px solid rgba(242, 239, 231, .16);
-}
-#commodity .commodity-evidence-grid > article:nth-child(1)::before {
-  background: radial-gradient(circle at 50% 42%, var(--lime) 0 22px, transparent 23px);
-}
-#commodity .commodity-evidence-grid > article:nth-child(2)::before {
-  background: radial-gradient(circle, var(--lime) 0 9px, transparent 10px) 8% 10% / 33% 50%;
-}
-#commodity .commodity-evidence-grid > article:nth-child(3)::before {
-  background:
-    linear-gradient(var(--lime), var(--lime)) 8% 20% / 78% 7px no-repeat,
-    linear-gradient(var(--lime), var(--lime)) 8% 43% / 58% 7px no-repeat,
-    linear-gradient(var(--lime), var(--lime)) 8% 66% / 88% 7px no-repeat,
-    linear-gradient(var(--lime), var(--lime)) 8% 89% / 68% 7px no-repeat;
-}
-#commodity .commodity-evidence-grid > article:nth-child(4)::before {
-  border-bottom-color: rgba(17, 19, 23, .22);
-  background:
-    radial-gradient(circle at 12% 24%, rgba(17,19,23,.18) 0 9px, transparent 10px),
-    radial-gradient(circle at 37% 70%, rgba(17,19,23,.28) 0 10px, transparent 11px),
-    radial-gradient(circle at 58% 32%, rgba(17,19,23,.14) 0 8px, transparent 9px),
-    radial-gradient(circle at 76% 74%, rgba(17,19,23,.38) 0 10px, transparent 11px),
-    radial-gradient(circle at 88% 18%, var(--ink) 0 13px, transparent 14px);
-}
-#commodity .commodity-evidence-grid small,
-#commodity .commodity-evidence-grid h3,
-#commodity .commodity-evidence-grid p { color: transparent !important; font-size: 0 !important; }
-#commodity .commodity-evidence-grid strong,
-#commodity .commodity-evidence-grid .token-bars { display: none !important; }
-#commodity .commodity-evidence-grid small::after {
-  display: block;
-  color: #8f9288;
-  font: 9px 'DM Mono', monospace;
-  letter-spacing: .09em;
-}
-#commodity .commodity-evidence-grid h3::after {
-  display: block;
-  margin: 13px 0 16px;
-  color: var(--paper);
-  font: 650 clamp(27px, 3vw, 46px) / .9 'Space Grotesk', sans-serif;
-  letter-spacing: -.075em;
-}
-#commodity .commodity-evidence-grid p::after {
-  display: block;
-  margin-top: auto;
-  color: #b5b7af;
-  font: 500 clamp(12px, 1.05vw, 16px) / 1.25 'Manrope', sans-serif;
-}
-#commodity .commodity-evidence-grid > article:nth-child(4) small::after,
-#commodity .commodity-evidence-grid > article:nth-child(4) h3::after,
-#commodity .commodity-evidence-grid > article:nth-child(4) p::after { color: var(--ink); }
-#commodity .commodity-evidence-grid > article:nth-child(1) small::after { content: "01 / SCARCE"; }
-#commodity .commodity-evidence-grid > article:nth-child(1) h3::after { content: "CONSERVE"; }
-#commodity .commodity-evidence-grid > article:nth-child(1) p::after { content: "Expensive intelligence is protected, queued and rationed."; }
-#commodity .commodity-evidence-grid > article:nth-child(2) small::after { content: "02 / COPIES"; }
-#commodity .commodity-evidence-grid > article:nth-child(2) h3::after { content: "REPLICATE"; }
-#commodity .commodity-evidence-grid > article:nth-child(2) p::after { content: "The same capability can be instantiated again and again."; }
-#commodity .commodity-evidence-grid > article:nth-child(3) small::after { content: "03 / SIMULTANEITY"; }
-#commodity .commodity-evidence-grid > article:nth-child(3) h3::after { content: "PARALLELISE"; }
-#commodity .commodity-evidence-grid > article:nth-child(3) p::after { content: "Many approaches can run at the same time."; }
-#commodity .commodity-evidence-grid > article:nth-child(4) small::after { content: "04 / ABUNDANCE"; }
-#commodity .commodity-evidence-grid > article:nth-child(4) h3::after { content: "WASTE"; }
-#commodity .commodity-evidence-grid > article:nth-child(4) p::after { content: "Retries, dead ends and disposable attempts become economical."; }
-#commodity .commodity-thesis {
-  margin: 0 !important;
-  padding-top: 16px;
-  border-top: 1px solid rgba(242, 239, 231, .13);
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 1 !important;
-}
-#commodity .commodity-thesis br,
-#commodity .commodity-thesis em { display: none !important; }
-#commodity .commodity-thesis::before,
-#commodity .commodity-thesis::after {
-  display: block;
-  font: 500 clamp(27px, 3.45vw, 52px) / .98 'Space Grotesk', sans-serif;
-  letter-spacing: -.055em;
-}
-#commodity .commodity-thesis::before { content: "When intelligence becomes cheap enough,"; color: var(--paper); }
-#commodity .commodity-thesis::after { content: "you stop conserving it and start wasting it."; color: var(--lime); }
+.abundance-step:last-child{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.abundance-glyph{height:clamp(76px,10.5vh,112px);margin-bottom:14px;border-bottom:1px solid rgba(242,239,231,.16)}
+.abundance-step:last-child .abundance-glyph{border-bottom-color:rgba(17,19,23,.22)}
+.glyph-conserve{background:radial-gradient(circle at 50% 42%,var(--lime) 0 21px,transparent 22px)}
+.glyph-replicate{background:radial-gradient(circle,var(--lime) 0 8px,transparent 9px) 8% 10% / 33% 50%}
+.glyph-parallelise{background:linear-gradient(var(--lime),var(--lime)) 8% 20%/78% 7px no-repeat,linear-gradient(var(--lime),var(--lime)) 8% 43%/58% 7px no-repeat,linear-gradient(var(--lime),var(--lime)) 8% 66%/88% 7px no-repeat,linear-gradient(var(--lime),var(--lime)) 8% 89%/68% 7px no-repeat}
+.glyph-waste{background:radial-gradient(circle at 12% 24%,rgba(17,19,23,.18) 0 9px,transparent 10px),radial-gradient(circle at 37% 70%,rgba(17,19,23,.28) 0 10px,transparent 11px),radial-gradient(circle at 58% 32%,rgba(17,19,23,.14) 0 8px,transparent 9px),radial-gradient(circle at 76% 74%,rgba(17,19,23,.38) 0 10px,transparent 11px),radial-gradient(circle at 88% 18%,var(--ink) 0 13px,transparent 14px)}
+.abundance-step small{color:#8f9288;font:9px 'DM Mono',monospace;letter-spacing:.09em}.abundance-step:last-child small{color:var(--ink)}
+.abundance-step h3{margin:12px 0 15px;color:inherit;font:650 clamp(26px,2.8vw,43px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em}
+.abundance-step p{margin:auto 0 0;color:#b5b7af;font:500 clamp(12px,1vw,15px)/1.25 'Manrope',sans-serif}.abundance-step:last-child p{color:var(--ink)}
 
-@media (max-width: 900px) {
-  #evidence .evidence-overlay { grid-template-columns: repeat(3, minmax(0,1fr)); grid-template-rows: auto 1fr 1fr auto; }
-  #evidence .evidence-overlay::before { grid-column: 1 / 2; }
-  #evidence .evidence-overlay::after { grid-column: 2 / -1; }
-  #evidence .benchmark-reveal-head > span { grid-column: 1; grid-row: 2; }
-  #evidence .benchmark-reveal-head > b { grid-column: 2; grid-row: 2; }
-  #evidence .benchmark-cards > article:nth-child(1) { grid-column: 3; grid-row: 2; }
-  #evidence .benchmark-cards > article:nth-child(2) { grid-column: 1; grid-row: 3; }
-  #evidence .benchmark-cards > article:nth-child(3) { grid-column: 2; grid-row: 3; }
-  #evidence .benchmark-cards > article:nth-child(4) { grid-column: 3; grid-row: 3; }
-  #evidence .benchmark-reveal-head > span,
-  #evidence .benchmark-reveal-head > b,
-  #evidence .benchmark-cards > article { height: auto !important; min-height: 120px; }
-  #evidence .benchmark-thesis { grid-row: 4; }
-  #commodity .commodity-evidence-grid { grid-template-columns: 1fr 1fr !important; }
-  #commodity .commodity-evidence-grid > article::before { height: 70px; }
+@media(max-width:900px){
+  #evidence .threshold-overlay{grid-template-rows:auto minmax(0,1fr) auto auto}.threshold-steps{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr 1fr}.threshold-step{height:auto!important;min-height:0}.threshold-head,.abundance-head{font-size:8px}.threshold-thesis,.abundance-thesis{font-size:clamp(22px,4vw,34px)}
+  .abundance-steps{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr 1fr}.abundance-glyph{height:55px}.abundance-step{padding:11px}.abundance-step h3{margin:7px 0 8px}.abundance-step p{font-size:10px}
+}
+@media(max-height:820px) and (min-width:901px){
+  #evidence .threshold-overlay,#commodity .abundance-overlay{inset:7% clamp(18px,4vw,64px) 5%;padding:18px 24px;gap:8px}
+  .threshold-head,.abundance-head{padding-bottom:10px;font-size:8px}.threshold-step{padding:10px 9px 12px}.threshold-step small{font-size:7px;margin-bottom:7px}.threshold-step strong{font-size:clamp(20px,2.25vw,33px)}
+  .threshold-thesis,.abundance-thesis{padding-top:10px;font-size:clamp(22px,2.7vw,38px)}.reveal-source{font-size:7px}
+  .abundance-step{padding:11px 12px}.abundance-glyph{height:68px;margin-bottom:9px}.abundance-step small{font-size:7px}.abundance-step h3{font-size:clamp(22px,2.45vw,35px);margin:8px 0 10px}.abundance-step p{font-size:10px}
 }
