@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "markets", "consulting", "end"];
+const slideIds = ["cover", "top", "evidence", "commodity", "crowd", "embodiment", "energy", "longevity", "work", "human", "navigator", "today", "consulting", "end"];
 
 const milestones = [
   { year: "2017", label: "Transformer", note: "the architecture" },
@@ -340,39 +340,24 @@ export function MetaTrendsPresentation() {
       <section className="panel panel-dark human-panel" id="human"><div className="human-visual"><div className="human-orbit" /><div className="human-dot">?</div><div className="human-label label-one">MEANS</div><div className="human-label label-two">ENDS</div><div className="human-label label-three">MEANING</div></div><div className="human-copy"><p className="section-no">08 / THE HUMAN RESIDUE</p><h2>When machines<br />can produce answers,</h2><p className="human-statement">humans remain responsible for deciding which questions are worth asking.</p></div></section>
 
       <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">10 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section>
-      <section className="panel market-shift-panel implications-panel" id="markets">
-        <div className="implications-kicker dark">11 / FROM TECHNOLOGY TO OUTCOMES</div>
-        <h2 className="implications-title dark">What happens<br /><span>in a market we know?</span></h2>
-        <p className="market-domain">PUBLIC SAFETY / HOMELAND SECURITY</p>
-        <div className="market-shifts">
-          <div><small>01</small><strong>CCTV MONITORING</strong><i>→</i><b>URBAN INTELLIGENCE</b></div>
-          <div><small>02</small><strong>COMMAND CENTRES</strong><i>→</i><b>DECISION INTELLIGENCE</b></div>
-          <div><small>03</small><strong>DRONES</strong><i>→</i><b>AUTONOMOUS AERIAL ECOSYSTEMS</b></div>
-          <div><small>04</small><strong>COUNTER-UAS</strong><i>→</i><b>INTEGRATED AIRSPACE SECURITY</b></div>
-          <div><small>05</small><strong>EMERGENCY RESPONSE</strong><i>→</i><b>PREDICTIVE RESPONSE</b></div>
-          <div><small>06</small><strong>CYBERSECURITY</strong><i>→</i><b>DIGITAL TRUST + RESILIENCE</b></div>
-        </div>
-        <p className="market-payoff">The value is moving<br />from <em>assets</em> to <strong>outcomes.</strong></p>
-      </section>
-
       <section className="panel panel-dark implications-panel practice-build-panel" id="consulting">
-        <div className="implications-kicker">12 / THE PRACTICE RESPONSE</div>
-        <h2 className="practice-build-title">What should we<br /><span>build now?</span></h2>
+        <div className="implications-kicker">11 / THE PRACTICE RESPONSE</div>
+        <h2 className="practice-build-title">What should we<br /><span>build next?</span></h2>
         <div className="practice-build-grid">
           <article className="practice-build-card">
-            <small>01 / DECISION INTELLIGENCE</small>
-            <h3>Design the layer<br />above the systems.</h3>
-            <p>Cameras, sensors, drones, command centres and policing systems increasingly need an intelligence layer that connects signals to decisions.</p>
+            <small>01 / CLOSED-LOOP OPERATIONS</small>
+            <h3>Move from informing action<br />to initiating it.</h3>
+            <p>Systems already sense, fuse and present. The next step is to recommend, trigger and coordinate response within defined operating limits.</p>
           </article>
           <article className="practice-build-card">
             <small>02 / AUTONOMY ASSURANCE</small>
             <h3>Govern systems<br />that can act.</h3>
-            <p>Help clients set the controls, accountability and operating boundaries for systems that increasingly sense, decide and act on their own.</p>
+            <p>Define authority, human override, accountability, auditability and operating boundaries for increasingly autonomous systems.</p>
           </article>
           <article className="practice-build-card">
-            <small>03 / AI-NATIVE OPERATIONS</small>
+            <small>03 / AGENTIC OPERATIONS</small>
             <h3>Redesign work<br />around agents.</h3>
-            <p>Redesign workflows, roles and decision rights around humans working with agents rather than simply adding AI to existing processes.</p>
+            <p>Redesign workflows, roles and decision rights around humans supervising and collaborating with software agents.</p>
           </article>
         </div>
         <p className="practice-build-payoff">These are not new markets.<br /><strong>They are the next layer of the markets we already know.</strong></p>
