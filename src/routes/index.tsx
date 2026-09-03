@@ -239,7 +239,7 @@ export function MetaTrendsPresentation() {
       </section>
 
       <section className={`panel panel-graph evidence-base ${evidenceRevealed ? "evidence-open" : ""}`} id="evidence">
-        <div className="section-head"><p className="section-no">01 / THE ARRIVAL</p><h2>The singularity did not arrive as a bang.<br /><span>It arrived as a curve.</span></h2></div>
+        <div className="section-head"><p className="section-no">01 / THE ARRIVAL</p><h2>If this is the Singularity, it did not arrive as a bang.<br /><span>It arrived as a curve.</span></h2></div>
         <div className="evidence-grid">
           <article className="chart-card chart-dark"><div className="chart-label"><span>Capability frontier</span><strong>ACCELERATING</strong></div><svg className="curve-chart" viewBox="0 0 620 260" role="img" aria-label="Illustrative accelerating capability curve"><defs><linearGradient id="curveFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#d7ff4f" stopOpacity=".35"/><stop offset="100%" stopColor="#d7ff4f" stopOpacity="0"/></linearGradient></defs><path d="M45 220H585M45 175H585M45 130H585M45 85H585M45 40H585" className="gridline" /><path d="M45 220 C175 220 270 216 345 195 C420 174 455 115 485 75 C520 30 550 18 585 12 L585 220 L45 220Z" fill="url(#curveFill)" /><path d="M45 220 C175 220 270 216 345 195 C420 174 455 115 485 75 C520 30 550 18 585 12" className="neon-line" /><circle cx="470" cy="94" r="5" className="neon-dot" /><circle cx="585" cy="12" r="7" className="neon-dot" /><text x="45" y="247">2017</text><text x="245" y="247">2022</text><text x="430" y="247">2025</text><text x="558" y="247">NOW</text><text x="480" y="64" className="chart-callout">reasoning + agents</text></svg><p className="chart-caption">New capability layers are arriving before organisations finish absorbing the last one.</p></article>
           <article className="chart-card chart-light"><div className="chart-label"><span>Distance to expert performance</span><strong>COLLAPSING</strong></div><svg className="gap-chart" viewBox="0 0 620 260" role="img" aria-label="Illustrative collapse of the gap to expert performance"><path d="M45 220H585M45 175H585M45 130H585M45 85H585M45 40H585" className="gridline-light" /><path d="M45 42 C165 56 215 79 305 108 C385 135 425 169 475 194 C520 214 554 218 585 220" className="red-line" /><circle cx="585" cy="220" r="7" className="red-dot" /><text x="45" y="247">2019</text><text x="245" y="247">2022</text><text x="430" y="247">2025</text><text x="558" y="247">NOW</text><text x="54" y="31" className="chart-callout-dark">human / expert gap</text></svg><p className="chart-caption">Across many public tests, the gap is falling towards the floor. The tests now have to move.</p></article>
@@ -299,10 +299,11 @@ export function MetaTrendsPresentation() {
 
       <section className="panel panel-dark human-panel" id="human"><div className="human-visual"><div className="human-orbit" /><div className="human-dot">?</div><div className="human-label label-one">MEANS</div><div className="human-label label-two">ENDS</div><div className="human-label label-three">MEANING</div></div><div className="human-copy"><p className="section-no">08 / THE HUMAN RESIDUE</p><h2>When machines<br />can produce answers,</h2><p className="human-statement">humans remain responsible for deciding which questions are worth asking.</p></div></section>
 
-      <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">09 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><div className="consulting-grid"><span>STRATEGY</span><span>OPERATING MODEL</span><span>GOVERNANCE</span><span>IMPLEMENTATION</span><span>TRUST</span></div><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section>
+      <section className="panel close-panel" id="today"><div className="close-mark">∞</div><p className="section-no">09 / BACK TO TODAY</p><h2>The future will not be<br /><em>delivered by intelligence alone.</em></h2><p className="close-copy">It will be delivered by institutions that can translate intelligence into operating reality.</p><footer><span>There is time for us.</span><span>EY Managers // Meta Trends</span></footer></section>
       <section className="panel market-shift-panel implications-panel" id="markets">
         <div className="implications-kicker dark">11 / FROM TECHNOLOGY TO OUTCOMES</div>
-        <h2 className="implications-title dark">What happens<br /><span>to our world?</span></h2>
+        <h2 className="implications-title dark">What happens<br /><span>in a market we know?</span></h2>
+        <p className="market-domain">PUBLIC SAFETY / HOMELAND SECURITY</p>
         <div className="market-shifts">
           <div><small>01</small><strong>CCTV MONITORING</strong><i>→</i><b>URBAN INTELLIGENCE</b></div>
           <div><small>02</small><strong>COMMAND CENTRES</strong><i>→</i><b>DECISION INTELLIGENCE</b></div>
@@ -311,7 +312,7 @@ export function MetaTrendsPresentation() {
           <div><small>05</small><strong>EMERGENCY RESPONSE</strong><i>→</i><b>PREDICTIVE RESPONSE</b></div>
           <div><small>06</small><strong>CYBERSECURITY</strong><i>→</i><b>DIGITAL TRUST + RESILIENCE</b></div>
         </div>
-        <p className="market-payoff">The client may stop buying <em>assets.</em><br />They may start buying <strong>outcomes.</strong></p>
+        <p className="market-payoff">The value is moving<br />from <em>assets</em> to <strong>outcomes.</strong></p>
       </section>
 
       <section className="panel panel-dark implications-panel value-chain-panel" id="consulting">
@@ -320,7 +321,7 @@ export function MetaTrendsPresentation() {
         <div className="value-chain-block yesterday"><span>YESTERDAY</span><div>DPR <i>→</i> RFP <i>→</i> PROCUREMENT <i>→</i> PMU <i>→</i> IMPLEMENTATION</div></div>
         <div className="value-chain-divider">↓</div>
         <div className="value-chain-block tomorrow"><span>TOMORROW</span><div>FORESIGHT <i>→</i> STRATEGY <i>→</i> ARCHITECTURE <i>→</i> GOVERNANCE <i>→</i> ASSURANCE <i>→</i> TRANSFORMATION</div></div>
-        <p className="value-chain-payoff">When technology becomes abundant,<br /><strong>judgement moves up the value chain.</strong></p>
+        <p className="value-chain-payoff">When intelligence becomes abundant,<br /><strong>judgement moves up the value chain.</strong></p>
       </section>
 
       <section className="panel panel-lime implications-panel bet-panel" id="bet">
