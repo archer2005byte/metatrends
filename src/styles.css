@@ -8,6 +8,7 @@
 @import "./styles/resources.css";
 @import "./styles/presentation-crowd.css";
 @import "./styles/presentation-consulting.css";
+@import "./styles/presentation-planetary.css";
 
 @custom-variant dark (&:is(.dark *));
 
