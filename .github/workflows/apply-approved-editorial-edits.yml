@@ -1,0 +1,79 @@
+name: Apply approved editorial refinements
+
+on:
+  push:
+    branches: [feature/consulting-implications]
+    paths: [.github/workflows/apply-approved-editorial-edits.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  edit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/consulting-implications
+
+      - name: Apply approved copy and structure changes
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          index = Path('src/routes/index.tsx')
+          text = index.read_text()
+
+          replacements = [
+            (
+              'The singularity did not arrive as a bang.<br /><span>It arrived as a curve.</span>',
+              'If this is the Singularity, it did not arrive as a bang.<br /><span>It arrived as a curve.</span>'
+            ),
+            (
+              '<div className="consulting-grid"><span>STRATEGY</span><span>OPERATING MODEL</span><span>GOVERNANCE</span><span>IMPLEMENTATION</span><span>TRUST</span></div>',
+              ''
+            ),
+            (
+              '<h2 className="implications-title dark">What happens<br /><span>to our world?</span></h2>',
+              '<h2 className="implications-title dark">What happens<br /><span>in a market we know?</span></h2>\n        <p className="market-domain">PUBLIC SAFETY / HOMELAND SECURITY</p>'
+            ),
+            (
+              '<p className="market-payoff">The client may stop buying <em>assets.</em><br />They may start buying <strong>outcomes.</strong></p>',
+              '<p className="market-payoff">The value is moving<br />from <em>assets</em> to <strong>outcomes.</strong></p>'
+            ),
+            (
+              'When technology becomes abundant,<br /><strong>judgement moves up the value chain.</strong>',
+              'When intelligence becomes abundant,<br /><strong>judgement moves up the value chain.</strong>'
+            ),
+          ]
+
+          for old, new in replacements:
+            count = text.count(old)
+            if count != 1:
+              raise SystemExit(f'Expected exactly one match, found {count}: {old[:80]}')
+            text = text.replace(old, new, 1)
+
+          index.write_text(text)
+
+          css_path = Path('src/styles/presentation-consulting.css')
+          css = css_path.read_text()
+          old = '.market-shift-panel{background:#dfddd4;color:var(--ink)}.market-shifts{margin-top:40px;border-top:2px solid var(--ink)}'
+          new = ".market-shift-panel{background:#dfddd4;color:var(--ink)}.market-domain{margin:18px 0 0;font:11px 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#676861}.market-shifts{margin-top:22px;border-top:2px solid var(--ink)}"
+          count = css.count(old)
+          if count != 1:
+            raise SystemExit(f'Expected market CSS marker once, found {count}')
+          css_path.write_text(css.replace(old, new, 1))
+          PY
+
+      - name: Remove one-time workflow and commit
+        shell: bash
+        run: |
+          rm .github/workflows/apply-approved-editorial-edits.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Refine transition into consulting implications"
+          git push origin HEAD:feature/consulting-implications
