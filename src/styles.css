@@ -9,6 +9,7 @@
 @import "./styles/presentation-crowd.css";
 @import "./styles/presentation-consulting.css";
 @import "./styles/presentation-planetary.css";
+@import "./styles/presentation-thesis-reveals.css";
 
 @custom-variant dark (&:is(.dark *));
 
