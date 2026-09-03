@@ -1,0 +1,102 @@
+name: Refine energy causal spine
+
+on:
+  push:
+    branches: [feature/consulting-implications]
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/consulting-implications
+
+      - name: Refine planetary reveal
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          index = Path('src/routes/index.tsx')
+          text = index.read_text()
+
+          replacements = {
+            '<div className="planetary-head"><span>PLANETARY SYSTEMS</span><b>CONSTRAINT → DESIGN SPACE</b></div>':
+            '<div className="planetary-head"><span>PLANETARY RESPONSE</span><b>CONSTRAINT → SYSTEM DESIGN</b></div>',
+
+            '<p className="section-no">THE PLANETARY TURN</p>\n              <h3>The planet becomes<br /><em>a system to optimise.</em></h3>':
+            '<p className="section-no">THE TYPE I PROBLEM</p>\n              <h3>Before we reach for a star,<br /><em>we have to learn to run a planet.</em></h3>',
+
+            '<div className="planetary-earth"><span>EARTH</span><b>INTELLIGENCE</b><small>PLANETARY LAYER</small></div>':
+            '<div className="planetary-earth"><span>EARTH / TYPE I</span><b>PLANETARY<br />ENERGY</b><small>INTELLIGENCE AS CONTROL LAYER</small></div>',
+
+            '<p className="planetary-thesis">Abundant intelligence changes the class of problems civilisation can attempt to solve.</p>':
+            '<p className="planetary-thesis"><strong>Energy is the constraint.</strong><br />Intelligence helps us redesign the system around it.</p>',
+
+            '<p className="planetary-qualifier">Not every constraint disappears. More of them become tractable.</p>':
+            '<p className="planetary-qualifier">Climate is one of the problems that becomes more tractable when intelligence, energy and infrastructure converge.</p>',
+
+            '<span className="planetary-next">NEXT / PLANETARY → STELLAR →</span>':
+            '<span className="planetary-next">NEXT / WHEN THE PLANETARY CEILING RETURNS →</span>',
+
+            '<p className="kardashev-footer">The jump is not just more power. It is a larger operating environment.</p>':
+            '<p className="kardashev-footer">A planetary energy system still has a ceiling. If intelligence keeps scaling, the energy frontier has to scale with it.</p>'
+          }
+
+          for old, new in replacements.items():
+            if old not in text:
+              raise SystemExit(f'Missing expected index marker: {old[:90]}')
+            text = text.replace(old, new, 1)
+
+          index.write_text(text)
+
+          css = Path('src/styles/presentation-planetary.css')
+          s = css.read_text()
+          css_replacements = {
+            ".planetary-copy{position:relative;z-index:4;margin-top:clamp(30px,5vh,54px);width:49%;max-width:760px}":
+            ".planetary-copy{position:relative;z-index:4;margin-top:clamp(28px,4.2vh,48px);width:47%;max-width:700px}",
+
+            ".planetary-copy h3{margin:0;font:600 clamp(48px,6.2vw,94px)/.91 'Space Grotesk',sans-serif;letter-spacing:-.08em;color:var(--paper)}":
+            ".planetary-copy h3{margin:0;font:600 clamp(42px,5.45vw,82px)/.92 'Space Grotesk',sans-serif;letter-spacing:-.078em;color:var(--paper)}",
+
+            ".planetary-system{position:absolute;z-index:2;right:4.8vw;top:20%;width:min(48vw,740px);height:58%;min-height:430px}":
+            ".planetary-system{position:absolute;z-index:2;right:3vw;top:19%;width:min(47vw,720px);height:60%;min-height:430px}",
+
+            ".planetary-earth b{margin:7px 0 5px;font:650 25px/.9 'Space Grotesk',sans-serif;letter-spacing:-.055em;color:var(--lime)}":
+            ".planetary-earth b{margin:7px 0 5px;font:650 24px/.88 'Space Grotesk',sans-serif;letter-spacing:-.055em;color:var(--lime)}",
+
+            ".planetary-earth small{font:8px 'DM Mono',monospace;letter-spacing:.1em;color:#777a72}":
+            ".planetary-earth small{max-width:135px;font:7px/1.25 'DM Mono',monospace;letter-spacing:.08em;color:#777a72}",
+
+            ".planetary-thesis{position:absolute;z-index:4;left:clamp(28px,7vw,110px);bottom:11.5%;width:min(49vw,720px);margin:0;font:500 clamp(24px,3.05vw,45px)/1.02 'Space Grotesk',sans-serif;letter-spacing:-.055em;color:var(--paper)}":
+            ".planetary-thesis{position:absolute;z-index:4;left:clamp(28px,7vw,110px);bottom:12.5%;width:min(40vw,610px);margin:0;font:500 clamp(22px,2.55vw,38px)/1.04 'Space Grotesk',sans-serif;letter-spacing:-.05em;color:var(--paper)}.planetary-thesis strong{color:var(--lime);font-weight:650}",
+
+            ".planetary-qualifier{position:absolute;z-index:4;left:clamp(28px,7vw,110px);bottom:5.5%;margin:0;font:10px 'DM Mono',monospace;letter-spacing:.07em;color:#8e9187}":
+            ".planetary-qualifier{position:absolute;z-index:4;left:clamp(28px,7vw,110px);bottom:5.2%;width:min(45vw,700px);margin:0;font:9px/1.35 'DM Mono',monospace;letter-spacing:.055em;color:#8e9187}",
+
+            "@media(max-width:1000px){.planetary-copy{width:52%}.planetary-system{right:1.5vw;width:50vw}.planetary-node{width:150px}.planetary-earth{width:155px;height:155px}.planetary-thesis{width:54vw}}":
+            "@media(max-width:1000px){.planetary-copy{width:50%}.planetary-system{right:1.2vw;width:48vw}.planetary-node{width:150px}.planetary-earth{width:155px;height:155px}.planetary-thesis{width:43vw}.planetary-qualifier{width:48vw}}"
+          }
+
+          for old, new in css_replacements.items():
+            if old not in s:
+              raise SystemExit(f'Missing expected CSS marker: {old[:90]}')
+            s = s.replace(old, new, 1)
+
+          css.write_text(s)
+          PY
+
+      - name: Commit refinement and remove one-time workflow
+        shell: bash
+        run: |
+          rm .github/workflows/refine-energy-causal-spine.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Restore energy constraint causal spine"
+          git push origin HEAD:feature/consulting-implications
