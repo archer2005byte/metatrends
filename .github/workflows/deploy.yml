@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - feature/consulting-implications
   workflow_dispatch:
 
 permissions:
@@ -25,6 +27,7 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v4
         with:
+          ref: main
           path: main-src
 
       - name: Checkout preview branch
