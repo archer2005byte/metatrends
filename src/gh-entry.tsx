@@ -6,7 +6,6 @@ import { createRoot } from "react-dom/client";
 import { MetaTrendsPresentation } from "./routes/index";
 import { ResourcesPage } from "./routes/resources";
 import "./styles.css";
-import "./styles/presentation-consulting-preview.css";
 
 const rootEl = document.getElementById("root");
 if (rootEl) {
