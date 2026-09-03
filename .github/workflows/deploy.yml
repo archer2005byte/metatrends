@@ -3,6 +3,7 @@ name: Deploy consulting preview
 on:
   push:
     branches:
+      - main
       - feature/consulting-implications
   workflow_dispatch:
 
