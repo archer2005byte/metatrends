@@ -54,18 +54,25 @@ for (const size of sizes) {
     expect(await inViewport(page.locator('#commodity .abundance-overlay'), size.height)).toBeTruthy();
     await expect(page.locator('#commodity .abundance-thesis')).toBeVisible();
 
-    // Energy base plus planetary and Dyson reveal states.
+    // Energy base plus planetary and Dyson reveal states. Test the visible top/bottom
+    // contents rather than the overlay containers, which intentionally cover the panel.
     const energy = page.locator('#energy');
     await energy.scrollIntoViewIfNeeded();
     expect(await inViewport(page.locator('#energy .kardashev-footer'), size.height)).toBeTruthy();
+
     await energy.click({ position: { x: 420, y: 280 } });
     await expect(page.locator('#energy .planetary-overlay')).toBeVisible();
-    expect(await inViewport(page.locator('#energy .planetary-overlay'), size.height)).toBeTruthy();
+    await expect(page.locator('#energy .planetary-head')).toBeVisible();
     await expect(page.locator('#energy .planetary-next')).toBeVisible();
+    expect(await inViewport(page.locator('#energy .planetary-head'), size.height)).toBeTruthy();
+    expect(await inViewport(page.locator('#energy .planetary-next'), size.height)).toBeTruthy();
+
     await energy.click({ position: { x: 420, y: 280 } });
     await expect(page.locator('#energy .dyson-overlay')).toBeVisible();
-    expect(await inViewport(page.locator('#energy .dyson-overlay'), size.height)).toBeTruthy();
+    await expect(page.locator('#energy .dyson-overlay-header')).toBeVisible();
     await expect(page.locator('#energy .dyson-overlay-copy small')).toBeVisible();
+    expect(await inViewport(page.locator('#energy .dyson-overlay-header'), size.height)).toBeTruthy();
+    expect(await inViewport(page.locator('#energy .dyson-overlay-copy small'), size.height)).toBeTruthy();
 
     // Resources route resolves and carries the primary incident source.
     await page.goto('http://127.0.0.1:4173/resources', { waitUntil: 'networkidle' });
