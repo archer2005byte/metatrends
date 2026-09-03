@@ -1,9 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy consulting preview
 
 on:
   push:
     branches:
-      - main
       - feature/consulting-implications
   workflow_dispatch:
 
@@ -83,7 +82,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
+      name: github-pages-preview
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
