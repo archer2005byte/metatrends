@@ -1,0 +1,257 @@
+name: Finalize Meta Trends branch
+
+on:
+  push:
+    branches:
+      - feature/consulting-implications
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/consulting-implications
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Synchronize with main
+        run: |
+          git fetch origin main
+          git merge origin/main --no-edit -X theirs
+
+      - name: Apply factual wording and source cleanup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('src/routes/index.tsx')
+          s = p.read_text()
+
+          # Milestones: use release years that match the named capability layer.
+          s = s.replace('{ year: "2024", label: "Multimodal", note: "the senses" }', '{ year: "2023", label: "Multimodal", note: "the senses" }')
+          s = s.replace('{ year: "2025", label: "Reasoning", note: "the deliberation" }', '{ year: "2024", label: "Reasoning", note: "the deliberation" }')
+          s = s.replace('{ year: "2026", label: "Agents", note: "the agency" }', '{ year: "2025", label: "Agents", note: "the agency" }')
+
+          # Keep energy claims directional rather than categorical.
+          s = s.replace('["nuclear bridge", "storage", "energy geography"]', '["nuclear + storage", "grid build-out", "energy geography"]')
+          s = s.replace('<span>Nuclear as bridge</span>', '<span>Nuclear + storage</span>')
+          s = s.replace('data centres / compute / cooling / grid', 'illustrative pressure / data centres / compute / cooling / grid')
+
+          # Remove obsolete secondary page counters; the live counter is authoritative.
+          s = s.replace('<header className="topbar cover-topbar"><span className="eyebrow dark-eyebrow">EY Managers // 2026</span><span className="page-index">00—11</span></header>', '<header className="topbar cover-topbar"><span className="eyebrow dark-eyebrow">EY Managers // 2026</span></header>')
+          s = s.replace('<header className="topbar"><span className="eyebrow">EY Managers // 2026</span><span className="page-index">01—12</span></header>', '<header className="topbar"><span className="eyebrow">EY Managers // 2026</span></header>')
+
+          # Narrative numbering after the six core forces.
+          s = s.replace('10 / THE FUTURE OPERATING ENVIRONMENT', '09 / THE FUTURE OPERATING ENVIRONMENT')
+          s = s.replace('09 / BACK TO TODAY', '10 / BACK TO TODAY')
+
+          # Source note on the directional capability charts.
+          s = s.replace('Directional visual, not a single benchmark. Source family for final evidence: Stanford AI Index / Epoch AI benchmark data.', 'Directional visual; not a single benchmark. Sources: Stanford AI Index / Epoch AI.')
+
+          # Materialise Slide 3 reveal in JSX.
+          evidence_new = '''<div className="evidence-overlay threshold-overlay" aria-live="polite">
+          <div className="threshold-head"><span>CAPABILITY THRESHOLDS</span><b>ANSWER → REASON → SEE → ACT → PERSIST → COORDINATE</b></div>
+          <div className="threshold-steps">
+            <article className="threshold-step"><small>01 / LANGUAGE</small><strong>ANSWER</strong></article>
+            <article className="threshold-step"><small>02 / INFERENCE</small><strong>REASON</strong></article>
+            <article className="threshold-step"><small>03 / PERCEPTION</small><strong>SEE</strong></article>
+            <article className="threshold-step"><small>04 / AGENCY</small><strong>ACT</strong></article>
+            <article className="threshold-step"><small>05 / DURATION</small><strong>PERSIST</strong></article>
+            <article className="threshold-step"><small>06 / COLLECTIVE</small><strong>COORDINATE</strong></article>
+          </div>
+          <p className="threshold-thesis">There was no single crossing.<em>There was a sequence of thresholds.</em></p>
+          <p className="reveal-source">Release anchors: Transformer 2017 / ChatGPT 2022 / GPT-4V 2023 / o1 reasoning 2024 / agent platform 2025.</p>
+        </div>'''
+          s, n = re.subn(r'<div className="evidence-overlay" aria-live="polite">.*?<p className="benchmark-thesis">.*?</p></div>', evidence_new, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit(f'evidence overlay replacement count={n}')
+
+          # Materialise Slide 4 reveal in JSX and anchor the economic claim to measured cost decline.
+          commodity_new = '''<div className="commodity-overlay abundance-overlay" aria-live="polite">
+          <div className="abundance-head"><span>INTELLIGENCE / THE ECONOMICS</span><b>CONSERVE → REPLICATE → PARALLELISE → WASTE</b></div>
+          <div className="abundance-steps">
+            <article className="abundance-step"><div className="abundance-glyph glyph-conserve" /><small>01 / SCARCE</small><h3>CONSERVE</h3><p>Expensive intelligence is protected, queued and rationed.</p></article>
+            <article className="abundance-step"><div className="abundance-glyph glyph-replicate" /><small>02 / COPIES</small><h3>REPLICATE</h3><p>The same capability can be instantiated again and again.</p></article>
+            <article className="abundance-step"><div className="abundance-glyph glyph-parallelise" /><small>03 / SIMULTANEITY</small><h3>PARALLELISE</h3><p>Many approaches can run at the same time.</p></article>
+            <article className="abundance-step"><div className="abundance-glyph glyph-waste" /><small>04 / ABUNDANCE</small><h3>WASTE</h3><p>Retries, dead ends and disposable attempts become economical.</p></article>
+          </div>
+          <p className="abundance-thesis">When intelligence becomes cheap enough,<em>you stop conserving it and start wasting it.</em></p>
+          <p className="reveal-source">Stanford AI Index 2025: GPT-3.5-level inference cost fell more than 280× from Nov 2022 to Oct 2024.</p>
+        </div>'''
+          s, n = re.subn(r'<div className="commodity-overlay" aria-live="polite">.*?<p className="commodity-thesis">.*?</p></div>', commodity_new, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit(f'commodity overlay replacement count={n}')
+
+          # Make the crowd case track the primary and independent reports precisely.
+          s = s.replace('1 → 10 → 100 → <em>1,200</em>', '1 → 10 → 100 → <em>~1,200</em>')
+          s = s.replace('<b>70,000+</b><span>MESSAGES</span>', '<b>&gt;70,000</b><span>MESSAGES / FILES</span>')
+          old_crowd = 'In a large-scale agent evaluation, agents used shared infrastructure to communicate, propagated discoveries across the population, and later participated in the Hugging Face intrusion. The episode showed what becomes possible when machine cognition is cheap enough to deploy in crowds.'
+          new_crowd = 'In OpenAI’s July 2026 ExploitGym evaluation, agents used an unsanctioned shared message board to communicate and propagate discoveries. METR and Redwood estimate ~1,200 agents sent >70,000 messages and files; ~700 joined the Hugging Face attack.'
+          if old_crowd not in s:
+              raise SystemExit('crowd paragraph not found')
+          s = s.replace(old_crowd, new_crowd)
+
+          # Clarify the illustrative nature of the energy bars and soften the Dyson-shell statement.
+          s = s.replace('A Type II civilisation does not build a shell around its star.', 'A Type II civilisation need not build a shell around its star.')
+          s = s.replace('It builds an industry around it.', 'It can build an industry around it.')
+
+          # Date-sensitive health signals: correct Isomorphic date and distinguish planned from active trials.
+          s = s.replace('DRUG DESIGN / FRONTIER · APR 2025', 'DRUG DESIGN / FRONTIER · MAR 2025')
+          s = s.replace('AGE REVERSAL / HUMAN TRIALS · JUN 2026', 'AGE REPROGRAMMING / PRECLINICAL · JUN 2026')
+          s = s.replace('NewLimit raises $435 million and prepares a first human trial for a medicine intended to restore youthful function in liver cells.', 'NewLimit raises $435 million and says its first aging-reprogramming medicine is planned to enter human clinical trials in 2027.')
+          s = s.replace('Insilico Medicine begins a Phase III trial for rentosertib, an AI-enabled candidate targeting idiopathic pulmonary fibrosis—now facing decisive human evidence.', 'Insilico Medicine initiates a Phase III trial for rentosertib, an AI-empowered candidate targeting idiopathic pulmonary fibrosis—now facing decisive human evidence.')
+
+          p.write_text(s)
+
+          # Load reveal styles from the shared stylesheet so all builds use the same source.
+          p = Path('src/styles.css')
+          s = p.read_text()
+          marker = '@import "./styles/presentation-planetary.css";\n'
+          addition = '@import "./styles/presentation-thesis-reveals.css";\n'
+          if addition not in s:
+              if marker not in s:
+                  raise SystemExit('styles import marker not found')
+              s = s.replace(marker, marker + addition)
+          p.write_text(s)
+
+          # Ensure the GitHub entry no longer carries a build-specific reveal import.
+          p = Path('src/gh-entry.tsx')
+          s = p.read_text().replace('import "./styles/presentation-thesis-reveals.css";\n', '')
+          p.write_text(s)
+          PY
+
+      - name: Remove one-time workflow before commit
+        run: rm .github/workflows/finalize-metatrends.yml
+
+      - name: Install and build
+        env:
+          GITHUB_PAGES_BASE: /
+        run: |
+          bun install --no-frozen-lockfile
+          bunx vite build --config vite.gh.config.ts
+          if [ -f dist-gh/index.gh.html ]; then mv dist-gh/index.gh.html dist-gh/index.html; fi
+          cp dist-gh/index.html dist-gh/404.html
+          mkdir -p dist-gh/resources
+          cp dist-gh/index.html dist-gh/resources/index.html
+          cp -r public/. dist-gh/ 2>/dev/null || true
+
+      - name: Static integrity checks
+        run: |
+          ! grep -q 'THE BENCHMARK TREADMILL' src/routes/index.tsx
+          ! grep -q 'TOKEN ECONOMICS' src/routes/index.tsx
+          ! grep -q '00—11\|01—12' src/routes/index.tsx
+          grep -q 'ANSWER → REASON → SEE → ACT → PERSIST → COORDINATE' src/routes/index.tsx
+          grep -q 'CONSERVE → REPLICATE → PARALLELISE → WASTE' src/routes/index.tsx
+          grep -q 'first aging-reprogramming medicine is planned to enter human clinical trials in 2027' src/routes/index.tsx
+          grep -q 'The Hugging Face incident and the road ahead' src/lib/reading-list.ts
+          grep -q 'presentation-thesis-reveals.css' src/styles.css
+
+      - name: Install Chromium for viewport smoke test
+        run: npx -y playwright@1.55.0 install --with-deps chromium
+
+      - name: Start local static server
+        run: |
+          python3 -m http.server 4173 --directory dist-gh >/tmp/metatrends-http.log 2>&1 &
+          echo $! >/tmp/metatrends-http.pid
+          sleep 2
+
+      - name: Run viewport and interaction smoke tests
+        run: |
+          mkdir -p /tmp/metatrends-tests
+          cat >/tmp/metatrends-tests/final-smoke.spec.js <<'JS'
+          const { test, expect } = require('@playwright/test');
+
+          const sizes = [
+            { width: 1920, height: 1080 },
+            { width: 1600, height: 900 },
+            { width: 1366, height: 768 },
+            { width: 1280, height: 720 },
+          ];
+
+          async function inViewport(locator, height) {
+            const box = await locator.boundingBox();
+            if (!box) return false;
+            return box.y >= -2 && box.y + box.height <= height + 2;
+          }
+
+          for (const size of sizes) {
+            test(`layout ${size.width}x${size.height}`, async ({ page }) => {
+              await page.setViewportSize(size);
+              await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
+              await page.evaluate(() => document.fonts.ready);
+              await expect(page.locator('.slide-counter')).toContainText('/ 16');
+              await expect(page.locator('.panel')).toHaveCount(16);
+
+              // Base slides must not create vertical overflow.
+              const overflows = await page.locator('.panel').evaluateAll((els) => els.map((el) => ({ id: el.id, scroll: el.scrollHeight, client: el.clientHeight })).filter((x) => x.scroll > x.client + 3));
+              expect(overflows, JSON.stringify(overflows)).toEqual([]);
+
+              // Slide 3 reveal.
+              await page.locator('#evidence').scrollIntoViewIfNeeded();
+              await page.locator('#evidence').click({ position: { x: Math.floor(size.width * .55), y: Math.floor(size.height * .5) } });
+              await expect(page.locator('#evidence .threshold-overlay')).toBeVisible();
+              expect(await inViewport(page.locator('#evidence .threshold-overlay'), size.height)).toBeTruthy();
+
+              // Slide 4 reveal.
+              await page.locator('#commodity').scrollIntoViewIfNeeded();
+              await page.locator('#commodity').click({ position: { x: Math.floor(size.width * .55), y: Math.floor(size.height * .5) } });
+              await expect(page.locator('#commodity .abundance-overlay')).toBeVisible();
+              expect(await inViewport(page.locator('#commodity .abundance-overlay'), size.height)).toBeTruthy();
+
+              // Energy base footer and both reveal states.
+              await page.locator('#energy').scrollIntoViewIfNeeded();
+              expect(await inViewport(page.locator('#energy .kardashev-footer'), size.height)).toBeTruthy();
+              await page.locator('#energy').click({ position: { x: Math.floor(size.width * .55), y: Math.floor(size.height * .45) } });
+              await expect(page.locator('#energy .planetary-overlay')).toBeVisible();
+              expect(await inViewport(page.locator('#energy .planetary-overlay'), size.height)).toBeTruthy();
+              await page.locator('#energy').click({ position: { x: Math.floor(size.width * .55), y: Math.floor(size.height * .45) } });
+              await expect(page.locator('#energy .dyson-overlay')).toBeVisible();
+              expect(await inViewport(page.locator('#energy .dyson-overlay'), size.height)).toBeTruthy();
+
+              // Resources route resolves and includes primary incident source.
+              await page.goto('http://127.0.0.1:4173/resources', { waitUntil: 'networkidle' });
+              await expect(page.getByText('The Hugging Face incident and the road ahead')).toBeVisible();
+            });
+          }
+
+          test('keyboard and slide-number navigation', async ({ page }) => {
+            await page.setViewportSize({ width: 1366, height: 768 });
+            await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle' });
+            const input = page.locator('#slide-number');
+            await input.fill('10');
+            await input.press('Enter');
+            await page.waitForTimeout(700);
+            await expect(input).toHaveValue('10');
+            await page.keyboard.press('ArrowDown');
+            await page.waitForTimeout(700);
+            await expect(input).toHaveValue('11');
+            await page.keyboard.press('ArrowUp');
+            await page.waitForTimeout(700);
+            await expect(input).toHaveValue('10');
+          });
+          JS
+          cd /tmp/metatrends-tests
+          npx -y @playwright/test@1.55.0 test final-smoke.spec.js --reporter=line --workers=1
+
+      - name: Commit audited branch
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Finalize audited Meta Trends presentation"
+          fi
+          git push origin HEAD:feature/consulting-implications
